@@ -373,6 +373,12 @@
       <artifactId>hive-storage-api</artifactId>
       <version>2.2.0</version>
     </dependency>
+    <dependency>
+	  <groupId>org.apache.orc</groupId>
+	  <artifactId>orc</artifactId>
+	  <version>1.6.8</version>
+	  <type>pom</type>
+	</dependency>
 
   </dependencies>
 
