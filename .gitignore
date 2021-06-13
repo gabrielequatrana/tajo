@@ -21,3 +21,5 @@ atlassian-ide-plugin.xml
 # Antlr files
 *.tokens
 /bin/
+
+.travis(old).yml
