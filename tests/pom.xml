@@ -19,6 +19,14 @@
 		<!-- Report XML recuperato da Sonar nella directory ..../bookkeeper/my_tests//target/site/jacoco-aggregate/jacoco.xml -->
         <sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
+    
+    <dependencies>
+	    <dependency>
+	      <groupId>org.apache.tajo</groupId>
+	      <artifactId>tajo-common</artifactId>
+	      <version>${project.parent.version}</version>
+	    </dependency>
+    </dependencies>
 	
 	<build>
         <plugins>
