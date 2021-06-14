@@ -73,7 +73,7 @@
 		
 		<jacoco-maven-plugin.version>0.8.0</jacoco-maven-plugin.version>
 
-		<aggregate.report.dir>my-tests/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
+		<aggregate.report.dir>tests/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
 		<redirectTestOutputToFile>true</redirectTestOutputToFile>
 	</properties>
 
@@ -101,7 +101,7 @@
 		<module>tajo-tablespace-example</module>
 		<module>tajo-dist</module>
 
-		<module>tests</module>
+		<!-- <module>tests</module> -->
 	</modules>
 
 	<build>
