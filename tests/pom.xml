@@ -33,11 +33,6 @@
 			<plugin>
 				<groupId>org.apache.rat</groupId>
 				<artifactId>apache-rat-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>verify</phase>
-					</execution>
-				</executions>
 			</plugin>
 
 			<plugin>
