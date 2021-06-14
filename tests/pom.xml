@@ -15,16 +15,8 @@
 	<properties>
 		<!-- Report XML recuperato da Sonar nella directory ..../bookkeeper/my_tests//target/site/jacoco-aggregate/jacoco.xml -->
         <sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
-   
    		<jacoco-maven-plugin.version>0.8.0</jacoco-maven-plugin.version>
     </properties>
-    
-    <dependencies>
-	    <dependency>
-	      <groupId>org.apache.tajo</groupId>
-	      <artifactId>tajo-common</artifactId>
-	    </dependency>
-    </dependencies>
 	
 	<build>
         <plugins>

@@ -5,4 +5,4 @@ jdk:
     - openjdk8
   
 script:
-    - mvn clean verify -PallModules -Drat.numUnapprovedLicenses=200 -DskipTests
+    - - mvn "-Dtest=org/apache/bookkeeper/tests/*Test" -DfailIfNoTests=false clean verify
