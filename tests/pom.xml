@@ -4,50 +4,81 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<artifactId>tajo-project</artifactId>
-	    <groupId>org.apache.tajo</groupId>
-	    <version>0.12.0-SNAPSHOT</version>
-	    <relativePath>../tajo-project</relativePath>
+		<groupId>org.apache.tajo</groupId>
+		<version>0.12.0-SNAPSHOT</version>
+		<relativePath>../tajo-project</relativePath>
 	</parent>
-	
+
 	<artifactId>tests</artifactId>
 	<name>Tajo Tests</name>
-	
+
 	<properties>
 		<!-- Report XML recuperato da Sonar nella directory ..../bookkeeper/my_tests//target/site/jacoco-aggregate/jacoco.xml -->
-        <sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
-   
-   		<jacoco-maven-plugin.version>0.8.0</jacoco-maven-plugin.version>
-    </properties>
-    
-    <dependencies>
-	    <dependency>
-	      <groupId>org.apache.tajo</groupId>
-	      <artifactId>tajo-common</artifactId>
-	    </dependency>
-    </dependencies>
-	
+		<sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
+
+		<jacoco-maven-plugin.version>0.8.0</jacoco-maven-plugin.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.tajo</groupId>
+			<artifactId>tajo-common</artifactId>
+		</dependency>
+	</dependencies>
+
 	<build>
-        <plugins>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 	
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.rat</groupId>
+					<artifactId>apache-rat-plugin</artifactId>
+					<version>0.8</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.rat</groupId>
+				<artifactId>apache-rat-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<excludes>
+						<exclude>src/site/**/*.html</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+	</build>
+
 </project>
