@@ -101,7 +101,7 @@
 		<module>tajo-tablespace-example</module>
 		<module>tajo-dist</module>
 
-		<!-- <module>tests</module> -->
+		<module>tests</module>
 	</modules>
 
 	<build>
