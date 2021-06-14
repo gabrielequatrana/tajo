@@ -5,4 +5,4 @@ jdk:
     - openjdk8
   
 script:
-    - - mvn "-Dtest=org/apache/bookkeeper/tests/*Test" -DfailIfNoTests=false -Dlicense.skip clean verify
+    - - mvn "-Dtest=org/apache/bookkeeper/tests/*Test" -DfailIfNoTests=false -Dlicense.skipAddThirdParty=true clean verify
