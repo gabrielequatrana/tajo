@@ -33,7 +33,7 @@ import org.apache.tajo.exception.UnsupportedException;
 import org.apache.tajo.tuple.memory.UnSafeTuple;
 import org.apache.tajo.tuple.memory.UnSafeTupleList;
 import org.apache.tajo.util.SizeOf;
-import jdk.internal.misc.Contended;
+import sun.misc.Contended;
 
 import java.util.Arrays;
 import java.util.Comparator;
