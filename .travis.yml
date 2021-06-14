@@ -6,4 +6,3 @@ jdk:
   
 script:
     - mvn "-Dtest=org/apache/tajo/tests/*Test" -DfailIfNoTests=false clean verify
-    - cat /home/travis/build/gabrielequatrana/tajo/tests/target/rat.txt

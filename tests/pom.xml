@@ -36,16 +36,8 @@
 				<executions>
 					<execution>
 						<phase>verify</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
 					</execution>
 				</executions>
-				<configuration>
-					<excludes>
-						<exclude>src/site/**/*.html</exclude>
-					</excludes>
-				</configuration>
 			</plugin>
 
 			<plugin>
