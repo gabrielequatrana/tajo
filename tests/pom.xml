@@ -11,6 +11,7 @@
 
 	<artifactId>tests</artifactId>
 	<name>Tajo Tests</name>
+	<packaging>jar</packaging>
 
 	<properties>
 		<!-- Report XML recuperato da Sonar nella directory ..../bookkeeper/my_tests//target/site/jacoco-aggregate/jacoco.xml -->
@@ -33,6 +34,19 @@
 			<plugin>
 				<groupId>org.apache.rat</groupId>
 				<artifactId>apache-rat-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<excludes>
+						<exclude>**/*</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 
 			<plugin>
