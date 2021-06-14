@@ -5,4 +5,4 @@ jdk:
     - openjdk8
   
 script:
-    - mvn "-Dtest=org/apache/tajo/tests/*Test" -DfailIfNoTests=false clean verify
+    - mvn "-Dtest=org/apache/tajo/tests/*Test" -DfailIfNoTests=false -Drat.skip=true clean verify
