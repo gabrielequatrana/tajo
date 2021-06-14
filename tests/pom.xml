@@ -22,7 +22,6 @@
 	    <dependency>
 	      <groupId>org.apache.tajo</groupId>
 	      <artifactId>tajo-common</artifactId>
-	      <version>${project.parent.version}</version>
 	    </dependency>
     </dependencies>
 	
