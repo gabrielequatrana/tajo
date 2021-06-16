@@ -45,6 +45,8 @@
     <httpclient.version>4.5</httpclient.version>
     <tajo.root>${project.parent.relativePath}/..</tajo.root>
     <extra.source.path>src/main/hadoop-${hadoop.version}</extra.source.path>
+  
+  	<jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
   </properties>
 
   <licenses>

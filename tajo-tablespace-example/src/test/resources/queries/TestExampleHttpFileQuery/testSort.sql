@@ -1,1 +1,0 @@
-select actor.id, actor.login from github order by type;

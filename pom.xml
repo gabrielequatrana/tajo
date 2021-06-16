@@ -70,9 +70,18 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<tajo.root>${basedir}</tajo.root>
-		
-		<jacoco-maven-plugin.version>0.8.0</jacoco-maven-plugin.version>
 
+		<jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
+
+		<!-- Sonar configs -->
+		<sonar.host.url>http://sonarcloud.io</sonar.host.url>
+		<sonar.organization>gabrielequatrana</sonar.organization>
+		<sonar.projectName>tajo</sonar.projectName>
+		<sonar.login>de8afbfaa17acd0f4e118a129cc755063f17a14e</sonar.login>
+		<sonar.language>java</sonar.language>
+		<sonar.java.source>1.8</sonar.java.source>
+		<sonar.java.file.suffixes>.java</sonar.java.file.suffixes>
+		<sonar.verbose>true</sonar.verbose>
 		<aggregate.report.dir>tests/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
 		<redirectTestOutputToFile>true</redirectTestOutputToFile>
 	</properties>
@@ -96,8 +105,6 @@
 		<module>tajo-thirdparty/asm</module>
 		<module>tajo-cli</module>
 		<module>tajo-metrics</module>
-		<module>tajo-core-tests</module>
-		<module>tajo-cluster-tests</module>
 		<module>tajo-tablespace-example</module>
 		<module>tajo-dist</module>
 
@@ -330,115 +337,10 @@
 	</build>
 
 	<profiles>
-		<!-- User Documentation -->
-		<profile>
-			<id>userdocs</id>
-			<modules>
-				<module>tajo-docs</module>
-			</modules>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-		</profile>
-
-		<profile>
-			<id>apache-release</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<build>
-				<plugins>
-					<!-- Create a source-release artifact that contains the fully buildable 
-						project directory source structure. This is the artifact which is the official 
-						subject of any release vote. -->
-					<plugin>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<dependencies>
-							<dependency>
-								<groupId>org.apache.apache.resources</groupId>
-								<artifactId>apache-source-release-assembly-descriptor</artifactId>
-								<version>1.0.4</version>
-							</dependency>
-						</dependencies>
-						<executions>
-							<execution>
-								<id>source-release-assembly</id>
-								<phase>package</phase>
-								<goals>
-									<goal>single</goal>
-								</goals>
-								<configuration>
-									<appendAssemblyId>false</appendAssemblyId>
-									<runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
-									<finalName>tajo-${project.version}-src</finalName>
-									<descriptorRefs>
-										<descriptorRef>${sourceReleaseAssemblyDescriptor}</descriptorRef>
-									</descriptorRefs>
-									<descriptors>
-										<descriptor>tajo-dist/src/main/resources/assemblies/tajo-src.xml</descriptor>
-									</descriptors>
-									<tarLongFileMode>gnu</tarLongFileMode>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-					<!-- We want to deploy the artifact to a staging location for perusal -->
-					<plugin>
-						<inherited>true</inherited>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-deploy-plugin</artifactId>
-						<configuration>
-							<updateReleaseInfo>true</updateReleaseInfo>
-						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-source-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>attach-sources</id>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>attach-javadocs</id>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<!-- We want to sign the artifact, the POM, and all attached artifacts -->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<configuration>
-							<passphrase>${gpg.passphrase}</passphrase>
-							<useAgent>${gpg.useagent}</useAgent>
-						</configuration>
-						<executions>
-							<execution>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
 		<profile>
 			<id>coverageProfile</id>
 			<activation>
-				<activeByDefault>false</activeByDefault>
+				<activeByDefault>true</activeByDefault>
 			</activation>
 			<build>
 				<plugins>
@@ -451,10 +353,6 @@
 								<id>report</id>
 								<phase>verify</phase>
 								<goals>
-									<!-- tutti i moduli hanno nel pom il plugin jacoco e generano il 
-										report di coverage nella fase verify maven -->
-									<!-- quando viene effettuata la build, i vari report vengono aggregati 
-										per il calcolo totale del coverage su tutti i moduli del progetto -->
 									<goal>report-aggregate</goal>
 								</goals>
 							</execution>
@@ -463,6 +361,6 @@
 				</plugins>
 			</build>
 		</profile>
-
 	</profiles>
+	
 </project>

@@ -3,6 +3,11 @@ language:
 
 jdk:
     - openjdk8
+    
+addons:
+    sonarcloud:
+        organization: "gabrielequatrana"
+        token: "de8afbfaa17acd0f4e118a129cc755063f17a14e"
   
 script:
-    - mvn "-Dtest=org/apache/tajo/tests/*Test" -DfailIfNoTests=false clean verify
+    - mvn "-Dtest=org/apache/tajo/tests/*Test" -DfailIfNoTests=false clean verify -e org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar -Dsonar.projectKey=gabrielequatrana_tajo

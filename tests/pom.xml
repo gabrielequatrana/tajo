@@ -14,10 +14,7 @@
 	<packaging>jar</packaging>
 
 	<properties>
-		<!-- Report XML recuperato da Sonar nella directory ..../bookkeeper/my_tests//target/site/jacoco-aggregate/jacoco.xml -->
 		<sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
-
-		<jacoco-maven-plugin.version>0.8.0</jacoco-maven-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -28,7 +25,6 @@
 	</dependencies>
 
 	<build>
-
 		<plugins>
 
 			<plugin>
@@ -71,5 +67,4 @@
 		</plugins>
 
 	</build>
-
 </project>
