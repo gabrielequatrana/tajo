@@ -79,7 +79,7 @@
 		<sonar.projectName>tajo</sonar.projectName>
 		<sonar.login>de8afbfaa17acd0f4e118a129cc755063f17a14e</sonar.login>
 		<sonar.language>java</sonar.language>
-		<sonar.java.source>1.8</sonar.java.source>
+		<sonar.java.source>11</sonar.java.source>
 		<sonar.java.file.suffixes>.java</sonar.java.file.suffixes>
 		<sonar.verbose>true</sonar.verbose>
 		<aggregate.report.dir>tests/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
