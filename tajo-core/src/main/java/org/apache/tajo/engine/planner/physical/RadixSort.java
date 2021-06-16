@@ -33,7 +33,6 @@ import org.apache.tajo.exception.UnsupportedException;
 import org.apache.tajo.tuple.memory.UnSafeTuple;
 import org.apache.tajo.tuple.memory.UnSafeTupleList;
 import org.apache.tajo.util.SizeOf;
-import sun.misc.Contended;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -55,9 +54,9 @@ public class RadixSort {
   private static final Log LOG = LogFactory.getLog(RadixSort.class);
 
   private static class RadixSortContext {
-    @Contended UnSafeTuple[] in;
-    @Contended UnSafeTuple[] out;
-    @Contended final int[] keys;
+    UnSafeTuple[] in;
+    UnSafeTuple[] out;
+    final int[] keys;
 
     final int[] sortKeyIds;
     final int maxSortKeyId;
