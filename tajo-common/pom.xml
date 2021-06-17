@@ -64,7 +64,24 @@
 			<plugin>
 				<groupId>org.apache.tajo</groupId>
 				<artifactId>tajo-maven-plugins</artifactId>
-				
+				<executions>
+					<execution>
+						<id>version-info</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>version-info</goal>
+						</goals>
+						<configuration>
+							<source>
+								<directory>${basedir}/src/main</directory>
+								<includes>
+									<include>java/**/*.java</include>
+									<include>proto/**/*.proto</include>
+								</includes>
+							</source>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
