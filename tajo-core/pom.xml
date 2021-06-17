@@ -52,6 +52,7 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
+			
 			<plugin>
 				<groupId>org.apache.rat</groupId>
 				<artifactId>apache-rat-plugin</artifactId>
@@ -65,12 +66,11 @@
 				</executions>
 				<configuration>
 					<excludes>
-						<exclude>benchmark/**</exclude>
-						<exclude>src/main/resources/META-INF/services/*</exclude>
-						<exclude>src/main/resources/webapps/static/js/*</exclude>
+						<exclude>**/*</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
+			
 			<plugin>
 				<artifactId>maven-deploy-plugin</artifactId>
 			</plugin>
@@ -308,6 +308,12 @@
 		<dependency>
 			<groupId>org.reflections</groupId>
 			<artifactId>reflections</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
