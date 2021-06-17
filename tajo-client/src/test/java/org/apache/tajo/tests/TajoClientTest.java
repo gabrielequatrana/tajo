@@ -1,4 +1,4 @@
-package org.apache.tajo;
+package org.apache.tajo.tests;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
