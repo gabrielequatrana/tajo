@@ -28,7 +28,6 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<metrics.version>3.1.0</metrics.version>
 		<maven.fork.count>3</maven.fork.count>
-
 		<sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 
