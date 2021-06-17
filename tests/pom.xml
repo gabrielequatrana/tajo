@@ -20,7 +20,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.tajo</groupId>
-			<artifactId>tajo-common</artifactId>
+			<artifactId>tajo-core</artifactId>
 		</dependency>
 	</dependencies>
 
