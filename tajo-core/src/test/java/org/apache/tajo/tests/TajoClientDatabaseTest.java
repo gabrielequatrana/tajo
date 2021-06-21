@@ -74,6 +74,8 @@ public class TajoClientDatabaseTest {
 				}
 			}
 		}
+		
+		client.selectDatabase("default");
 	}
 	
 	@Test
