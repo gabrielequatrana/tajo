@@ -80,11 +80,6 @@ public class TajoClientDatabaseTest {
 	public void createAndDropDatabaseTest() throws DuplicateDatabaseException, UndefinedDatabaseException, InsufficientPrivilegeException, CannotDropCurrentDatabaseException {
 		System.out.println("\n*************** TEST ***************");
 		
-		if (expectedException != null) {
-			exceptionRule.expect(expectedException);
-			System.out.println("Raised exception: " + expectedException.getName());
-		}
-		
 		int after = client.getAllDatabaseNames().size();
 
 		client.createDatabase(databaseName);
@@ -123,7 +118,7 @@ public class TajoClientDatabaseTest {
 		
 		int after = client.getAllDatabaseNames().size();
 		
-		String sql1 = "create database '" + databaseName + "'";
+		String sql1 = "create database " + databaseName;
 
 		client.executeQueryAndGetResult(sql1);
 
@@ -133,7 +128,7 @@ public class TajoClientDatabaseTest {
 		
 		assertTrue(client.existDatabase(databaseName));
 		
-		String sql2 = "drop database '" + databaseName + "'";
+		String sql2 = "drop database " + databaseName;
 		
 		client.updateQuery(sql2);
 		

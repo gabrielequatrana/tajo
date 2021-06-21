@@ -87,11 +87,6 @@ public class TajoClientTableTest {
 	public void createAndDropExternalTableTest() throws UndefinedTableException, InsufficientPrivilegeException, DuplicateTableException, UnavailableTableLocationException, IOException {
 		System.out.println("\n*************** TEST ***************");
 		
-		if (expectedException != null) {
-			exceptionRule.expect(expectedException);
-			System.out.println("Raised exception: " + expectedException.getName());
-		}
-		
 		int after = client.getTableList(null).size();
 		
 		Path path = createTempTable(tableName);
@@ -132,7 +127,7 @@ public class TajoClientTableTest {
 		int after = client.getTableList(null).size();
 		
 		Path path = createTempTable(tableName);
-		String sql1 = "create external table '" + tableName + "' (deptname text, score int4) " 
+		String sql1 = "create external table " + tableName + " (deptname text, score int4) " 
 					+ "using csv location '" + path + "'";
 		
 		client.executeQueryAndGetResult(sql1);
@@ -143,7 +138,7 @@ public class TajoClientTableTest {
 		
 		assertTrue(client.existTable(tableName));
 
-		String sql2 = "drop table '" + tableName + "'";
+		String sql2 = "drop table " + tableName;
 		
 		client.updateQuery(sql2);
 		
