@@ -23,7 +23,6 @@ public class TryTest {
 	
 	@BeforeClass
 	public static void setUp() throws Exception {
-		System.setProperty("hadoop.home.dir", "D:/Software/Eclipse/winutils");
 		cluster = TpchTestBase.getInstance().getTestingCluster();
 		conf = cluster.getConfiguration();
 		client = cluster.newTajoClient();
@@ -37,17 +36,21 @@ public class TryTest {
 	
 	@Test
 	public void createDatabaseTest() throws DuplicateDatabaseException {
-		System.out.println("TESTTESTETESTESTESTESTESTESTESTESTESTESTESTEST");
 		int current = client.getAllDatabaseNames().size();
 		
-		String p = IdentifierUtil.normalizeIdentifier("testCreateDatabase_");
+		System.out.println("\n*************** TEST ***************");
+		System.out.println("\n-------------- CREATE --------------");
+		String p = IdentifierUtil.normalizeIdentifier("createDatabase_");
 		for (int i = 0; i < 10; i++) {
 			assertEquals(current+i, client.getAllDatabaseNames().size());
 			
+			System.out.println("Created database: " + p + i);
 			client.createDatabase(p+i);;
 			
 			assertEquals(current+i+1, client.getAllDatabaseNames().size());
 		}
+		
+		System.out.println("\n************************************");
 	}
 
 }
