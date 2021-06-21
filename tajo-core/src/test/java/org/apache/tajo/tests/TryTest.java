@@ -62,12 +62,9 @@ public class TryTest {
 	@After
 	public void cleanUp() throws UndefinedDatabaseException, InsufficientPrivilegeException, CannotDropCurrentDatabaseException {
 		int current = client.getAllDatabaseNames().size();
-		for (String str : client.getAllDatabaseNames()) {
-			System.out.println("AAAAAA " + str);
-		}
 		if (current > 0) {
 			for (String str : client.getAllDatabaseNames()) {
-				if (!str.equals("information_schema")) {
+				if (!str.equals("information_schema") && !str.equals("default")) {
 					client.dropDatabase(str);
 				}
 			}
