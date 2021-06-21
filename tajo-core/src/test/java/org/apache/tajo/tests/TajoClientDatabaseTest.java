@@ -6,14 +6,11 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.apache.hadoop.fs.Path;
 import org.apache.tajo.client.TajoClient;
-import org.apache.tajo.conf.TajoConf;
 import org.apache.tajo.exception.CannotDropCurrentDatabaseException;
 import org.apache.tajo.exception.DuplicateDatabaseException;
 import org.apache.tajo.exception.InsufficientPrivilegeException;
 import org.apache.tajo.exception.UndefinedDatabaseException;
-import org.apache.tajo.schema.IdentifierUtil;
 import org.apache.tajo.tests.util.TajoTestingCluster;
 import org.apache.tajo.tests.util.TpchTestBase;
 import org.apache.tajo.util.CommonTestingUtil;
@@ -26,16 +23,13 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 @RunWith(Parameterized.class)
-public class TryTest {
+public class TajoClientDatabaseTest {
 
 	private static TajoTestingCluster cluster;
-	private static TajoConf conf;
 	private static TajoClient client;
-	private static Path testDir;
-
 	private String databaseName;
 
-	public TryTest(String databaseName) {
+	public TajoClientDatabaseTest(String databaseName) {
 		this.databaseName = databaseName;
 	}
 
@@ -49,9 +43,9 @@ public class TryTest {
 	@BeforeClass
 	public static void setUp() throws Exception {
 		cluster = TpchTestBase.getInstance().getTestingCluster();
-		conf = cluster.getConfiguration();
+		cluster.getConfiguration();
 		client = cluster.newTajoClient();
-		testDir = CommonTestingUtil.getTestDir();
+		CommonTestingUtil.getTestDir();
 	}
 
 	@AfterClass
@@ -61,8 +55,8 @@ public class TryTest {
 
 	@After
 	public void cleanUp() throws UndefinedDatabaseException, InsufficientPrivilegeException, CannotDropCurrentDatabaseException {
-		int current = client.getAllDatabaseNames().size();
-		if (current > 2) {
+		int databases = client.getAllDatabaseNames().size();
+		if (databases > 2) {
 			for (String str : client.getAllDatabaseNames()) {
 				if (!str.equals("information_schema") && !str.equals("default")) {
 					client.dropDatabase(str);
@@ -87,7 +81,7 @@ public class TryTest {
 		System.out.println("After: " + after);
 		System.out.println("Before: " + before);
 
-		assertTrue(after < before);
+		assertTrue(client.existDatabase(databaseName));
 
 		System.out.println("\n************************************\n");
 	}
@@ -119,27 +113,4 @@ public class TryTest {
 
 		System.out.println("\n************************************\n");
 	}
-
-	/*
-	 * @Test public void createDatabaseTest() throws DuplicateDatabaseException {
-	 * int current = client.getAllDatabaseNames().size();
-	 * 
-	 * System.out.println("\n*************** TEST ***************");
-	 * System.out.println("\n-------------- CREATE --------------"); String p =
-	 * IdentifierUtil.normalizeIdentifier("database_"); for (int i = 0; i < 10; i++)
-	 * { assertEquals(current+i, client.getAllDatabaseNames().size());
-	 * 
-	 * System.out.println("Created database: " + p + i);
-	 * client.createDatabase(p+i);;
-	 * 
-	 * assertEquals(current+i+1, client.getAllDatabaseNames().size()); }
-	 * 
-	 * System.out.println("\n************************************\n"); }
-	 */
-
-	/*@Test
-	public void dropDatabaseTest() {
-
-	}*/
-
 }
