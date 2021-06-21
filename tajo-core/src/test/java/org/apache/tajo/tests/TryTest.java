@@ -2,31 +2,51 @@ package org.apache.tajo.tests;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Calendar;
-
-import org.apache.tajo.datum.Datum;
-import org.apache.tajo.datum.Int8Datum;
-import org.apache.tajo.datum.TextDatum;
-import org.apache.tajo.engine.function.builtin.Date;
-import org.apache.tajo.storage.Tuple;
-import org.apache.tajo.storage.VTuple;
+import org.apache.hadoop.fs.Path;
+import org.apache.tajo.client.TajoClient;
+import org.apache.tajo.conf.TajoConf;
+import org.apache.tajo.exception.DuplicateDatabaseException;
+import org.apache.tajo.schema.IdentifierUtil;
+import org.apache.tajo.tests.util.TajoTestingCluster;
+import org.apache.tajo.tests.util.TpchTestBase;
+import org.apache.tajo.util.CommonTestingUtil;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class TryTest {
 	
+	private static TajoTestingCluster cluster;
+	private static TajoConf conf;
+	private static TajoClient client;
+	private static Path testDir;
+	
+	@BeforeClass
+	public static void setUp() throws Exception {
+		System.setProperty("hadoop.home.dir", "D:/Software/Eclipse/winutils");
+		cluster = TpchTestBase.getInstance().getTestingCluster();
+		conf = cluster.getConfiguration();
+		client = cluster.newTajoClient();
+		testDir = CommonTestingUtil.getTestDir();
+	}
+	
+	@AfterClass
+	public static void cleanUp() {
+		client.close();
+	}
+	
 	@Test
-	public void test() {
-		Date date = new Date();
-		Tuple tuple = new VTuple(new Datum[] {new TextDatum("25/12/2012 00:00:00")});
-		Int8Datum unixtime = (Int8Datum) date.eval(tuple);
-		Calendar c = Calendar.getInstance();
-		c.setTimeInMillis(unixtime.asInt8());
-	    assertEquals(2012, c.get(Calendar.YEAR));
-	    assertEquals(11, c.get(Calendar.MONTH));
-	    assertEquals(25, c.get(Calendar.DAY_OF_MONTH));
-	    assertEquals(0, c.get(Calendar.HOUR_OF_DAY));
-	    assertEquals(0, c.get(Calendar.MINUTE));
-	    assertEquals(0, c.get(Calendar.SECOND));
+	public void createDatabaseTest() throws DuplicateDatabaseException {
+		int current = client.getAllDatabaseNames().size();
+		
+		String p = IdentifierUtil.normalizeIdentifier("testCreateDatabase_");
+		for (int i = 0; i < 10; i++) {
+			assertEquals(current+i, client.getAllDatabaseNames().size());
+			
+			client.createDatabase(p+i);;
+			
+			assertEquals(current+i+1, client.getAllDatabaseNames().size());
+		}
 	}
 
 }
