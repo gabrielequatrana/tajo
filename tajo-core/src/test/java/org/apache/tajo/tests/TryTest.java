@@ -63,7 +63,9 @@ public class TryTest {
 	public void cleanUp() throws UndefinedDatabaseException, InsufficientPrivilegeException, CannotDropCurrentDatabaseException {
 		int current = client.getAllDatabaseNames().size();
 		if (current > 0) {
-			client.dropDatabase("test_database");
+			for (String str : client.getAllDatabaseNames()) {
+				client.dropDatabase(str);
+			}
 		}
 	}
 	
@@ -84,6 +86,8 @@ public class TryTest {
 		System.out.println("Before: " + before);
 		
 		assertTrue(after < before);
+		
+		System.out.println("\n************************************\n");
 	}
 	
 	/*@Test
