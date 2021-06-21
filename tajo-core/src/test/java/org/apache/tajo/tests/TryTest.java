@@ -37,6 +37,7 @@ public class TryTest {
 	
 	@Test
 	public void createDatabaseTest() throws DuplicateDatabaseException {
+		System.out.println("TESTTESTETESTESTESTESTESTESTESTESTESTESTESTEST");
 		int current = client.getAllDatabaseNames().size();
 		
 		String p = IdentifierUtil.normalizeIdentifier("testCreateDatabase_");
