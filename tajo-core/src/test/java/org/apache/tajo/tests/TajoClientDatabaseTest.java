@@ -179,7 +179,7 @@ public class TajoClientDatabaseTest {
 	}
 	
 	@Test
-	public void dropCurrentDatabaseTest() throws DuplicateDatabaseException, UndefinedDatabaseException, InsufficientPrivilegeException, CannotDropCurrentDatabaseException {
+	public void dropCurrentDatabaseTest() throws DuplicateDatabaseException, UndefinedDatabaseException, InsufficientPrivilegeException {
 		System.out.println("\n*************** TEST ***************");
 
 		client.createDatabase(databaseName);
@@ -191,7 +191,7 @@ public class TajoClientDatabaseTest {
 		
 		try {
 			client.dropDatabase(databaseName);
-		} catch (TajoInternalError e) {
+		} catch (CannotDropCurrentDatabaseException e) {
 			assertTrue(true);
 		}
 
