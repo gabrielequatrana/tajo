@@ -62,7 +62,7 @@ public class TryTest {
 	@After
 	public void cleanUp() throws UndefinedDatabaseException, InsufficientPrivilegeException, CannotDropCurrentDatabaseException {
 		int current = client.getAllDatabaseNames().size();
-		if (current > 0) {
+		if (current > 2) {
 			for (String str : client.getAllDatabaseNames()) {
 				if (!str.equals("information_schema") && !str.equals("default")) {
 					client.dropDatabase(str);
@@ -91,6 +91,34 @@ public class TryTest {
 
 		System.out.println("\n************************************\n");
 	}
+	
+	@Test
+	public void dropDatabaseTest() throws DuplicateDatabaseException, UndefinedDatabaseException, InsufficientPrivilegeException, CannotDropCurrentDatabaseException {
+		System.out.println("\n*************** TEST ***************");
+		int after = client.getAllDatabaseNames().size();
+
+		client.createDatabase(databaseName);
+
+		System.out.println("\n-------------- CREATE --------------");
+		System.out.println("Created database: " + databaseName);
+		System.out.println("N. of databases: " + client.getAllDatabaseNames().size());
+		
+		client.dropDatabase(databaseName);
+		
+		int before = client.getAllDatabaseNames().size();
+		
+		System.out.println("\n-------------- DROP --------------");
+		System.out.println("Dropped database: " + databaseName);
+		System.out.println("N. of databases: " + before);
+
+		System.out.println("\n-------------- RESULT --------------");
+		System.out.println("After: " + after);
+		System.out.println("Before: " + before);
+
+		assertEquals(after, before);
+
+		System.out.println("\n************************************\n");
+	}
 
 	/*
 	 * @Test public void createDatabaseTest() throws DuplicateDatabaseException {
@@ -109,9 +137,9 @@ public class TryTest {
 	 * System.out.println("\n************************************\n"); }
 	 */
 
-	// @Test
+	/*@Test
 	public void dropDatabaseTest() {
 
-	}
+	}*/
 
 }
