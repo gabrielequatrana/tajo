@@ -3,6 +3,7 @@ package org.apache.tajo.tests;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -18,7 +19,9 @@ import org.apache.tajo.util.CommonTestingUtil;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -28,17 +31,23 @@ public class TajoClientDatabaseTest {
 
 	private static TajoTestingCluster cluster;
 	private static TajoClient client;
+	
 	private String databaseName;
+	private Class<? extends Exception> expectedException;
+	
+	@Rule
+	public ExpectedException exceptionRule = ExpectedException.none();
 
-	public TajoClientDatabaseTest(String databaseName) {
+	public TajoClientDatabaseTest(String databaseName, Class<? extends Exception> expectedException) {
 		this.databaseName = databaseName;
+		this.expectedException = expectedException;
 	}
 
 	@Parameters
 	public static Collection<Object[]> getParameters() {
 		return Arrays.asList(new Object[][] {
-			{ "test_database" },
-			{ "" }
+			{ "test_database", null },
+			{ "", SQLException.class }
 		});
 	}
 
@@ -70,6 +79,12 @@ public class TajoClientDatabaseTest {
 	@Test
 	public void createAndDropDatabaseTest() throws DuplicateDatabaseException, UndefinedDatabaseException, InsufficientPrivilegeException, CannotDropCurrentDatabaseException {
 		System.out.println("\n*************** TEST ***************");
+		
+		if (expectedException != null) {
+			exceptionRule.expect(expectedException);
+			System.out.println("Raised exception: " + expectedException.getName());
+		}
+		
 		int after = client.getAllDatabaseNames().size();
 
 		client.createDatabase(databaseName);
@@ -100,6 +115,12 @@ public class TajoClientDatabaseTest {
 	@Test
 	public void createAndDropDatabaseByQuery() throws TajoException {
 		System.out.println("\n*************** TEST ***************");
+		
+		if (expectedException != null) {
+			exceptionRule.expect(expectedException);
+			System.out.println("Raised exception: " + expectedException.getName());
+		}
+		
 		int after = client.getAllDatabaseNames().size();
 		
 		String sql1 = "create database " + databaseName;

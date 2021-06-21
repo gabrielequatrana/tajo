@@ -47,8 +47,9 @@ public class TajoClientTableTest {
 	@Rule
 	public ExpectedException exceptionRule = ExpectedException.none();
 
-	public TajoClientTableTest(String tableName) {
+	public TajoClientTableTest(String tableName, Class<? extends Exception> expectedException) {
 		this.tableName = tableName;
+		this.expectedException = expectedException;
 	}
 
 	@Parameters
