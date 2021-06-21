@@ -13,6 +13,7 @@ import org.apache.tajo.conf.TajoConf;
 import org.apache.tajo.exception.CannotDropCurrentDatabaseException;
 import org.apache.tajo.exception.DuplicateTableException;
 import org.apache.tajo.exception.InsufficientPrivilegeException;
+import org.apache.tajo.exception.SQLSyntaxError;
 import org.apache.tajo.exception.TajoException;
 import org.apache.tajo.exception.UnavailableTableLocationException;
 import org.apache.tajo.exception.UndefinedDatabaseException;
@@ -25,7 +26,9 @@ import org.apache.tajo.util.CommonTestingUtil;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -39,6 +42,10 @@ public class TajoClientTableTest {
 	private static Path testDir;
 
 	private String tableName;
+	private Class<? extends Exception> expectedException;
+	
+	@Rule
+	public ExpectedException exceptionRule = ExpectedException.none();
 
 	public TajoClientTableTest(String tableName) {
 		this.tableName = tableName;
@@ -47,8 +54,8 @@ public class TajoClientTableTest {
 	@Parameters
 	public static Collection<Object[]> getParameters() {
 		return Arrays.asList(new Object[][] {
-			{ "test_table" }, 
-			{ "" }
+			{ "test_table", null }, 
+			{ "", SQLSyntaxError.class }
 		});
 	}
 
@@ -77,7 +84,13 @@ public class TajoClientTableTest {
 	
 	@Test
 	public void createAndDropExternalTableTest() throws UndefinedTableException, InsufficientPrivilegeException, DuplicateTableException, UnavailableTableLocationException, IOException {
-		System.out.println("\n*************** TEST ***************");	
+		System.out.println("\n*************** TEST ***************");
+		
+		if (expectedException != null) {
+			exceptionRule.expect(expectedException);
+			System.out.println("Raised exception: " + expectedException.getName());
+		}
+		
 		int after = client.getTableList(null).size();
 		
 		Path path = createTempTable(tableName);
@@ -109,6 +122,12 @@ public class TajoClientTableTest {
 	@Test
 	public void createAndDropExternalTableByQueryTest() throws TajoException, IOException {
 		System.out.println("\n*************** TEST ***************");	
+		
+		if (expectedException != null) {
+			exceptionRule.expect(expectedException);
+			System.out.println("Raised exception: " + expectedException.getName());
+		}
+		
 		int after = client.getTableList(null).size();
 		
 		Path path = createTempTable(tableName);
