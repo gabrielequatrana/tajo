@@ -191,7 +191,7 @@ public class TajoClientDatabaseTest {
 		
 		try {
 			client.dropDatabase(databaseName);
-		} catch (CannotDropCurrentDatabaseException e) {
+		} catch (CannotDropCurrentDatabaseException | TajoInternalError e) {
 			assertTrue(true);
 		}
 
