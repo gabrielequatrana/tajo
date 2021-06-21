@@ -12,6 +12,7 @@ import org.apache.tajo.exception.DuplicateDatabaseException;
 import org.apache.tajo.exception.InsufficientPrivilegeException;
 import org.apache.tajo.exception.SQLSyntaxError;
 import org.apache.tajo.exception.TajoException;
+import org.apache.tajo.exception.TajoInternalError;
 import org.apache.tajo.exception.UndefinedDatabaseException;
 import org.apache.tajo.tests.util.TajoTestingCluster;
 import org.apache.tajo.tests.util.TpchTestBase;
@@ -66,6 +67,8 @@ public class TajoClientDatabaseTest {
 
 	@After
 	public void cleanUp() throws UndefinedDatabaseException, InsufficientPrivilegeException, CannotDropCurrentDatabaseException {
+		client.selectDatabase("default");
+		
 		int databases = client.getAllDatabaseNames().size();
 		if (databases > 2) {
 			for (String str : client.getAllDatabaseNames()) {
@@ -74,8 +77,6 @@ public class TajoClientDatabaseTest {
 				}
 			}
 		}
-		
-		client.selectDatabase("default");
 	}
 	
 	@Test
@@ -178,7 +179,7 @@ public class TajoClientDatabaseTest {
 	}
 	
 	@Test
-	public void dropCurrentDatabaseTest() throws DuplicateDatabaseException, UndefinedDatabaseException, InsufficientPrivilegeException {
+	public void dropCurrentDatabaseTest() throws DuplicateDatabaseException, UndefinedDatabaseException, InsufficientPrivilegeException, CannotDropCurrentDatabaseException {
 		System.out.println("\n*************** TEST ***************");
 
 		client.createDatabase(databaseName);
@@ -190,7 +191,7 @@ public class TajoClientDatabaseTest {
 		
 		try {
 			client.dropDatabase(databaseName);
-		} catch (CannotDropCurrentDatabaseException e) {
+		} catch (TajoInternalError e) {
 			assertTrue(true);
 		}
 
