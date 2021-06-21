@@ -13,6 +13,7 @@ import org.apache.tajo.conf.TajoConf;
 import org.apache.tajo.exception.CannotDropCurrentDatabaseException;
 import org.apache.tajo.exception.DuplicateTableException;
 import org.apache.tajo.exception.InsufficientPrivilegeException;
+import org.apache.tajo.exception.TajoException;
 import org.apache.tajo.exception.UnavailableTableLocationException;
 import org.apache.tajo.exception.UndefinedDatabaseException;
 import org.apache.tajo.exception.UndefinedTableException;
@@ -47,6 +48,7 @@ public class TajoClientTableTest {
 	public static Collection<Object[]> getParameters() {
 		return Arrays.asList(new Object[][] {
 			{ "test_table" }, 
+			{ "" }
 		});
 	}
 
@@ -72,9 +74,9 @@ public class TajoClientTableTest {
 			}
 		}
 	}
-
+	
 	@Test
-	public void createExternalTableTest() throws IOException, DuplicateTableException, UnavailableTableLocationException, InsufficientPrivilegeException, UndefinedTableException {;
+	public void createAndDropExternalTableTest() throws UndefinedTableException, InsufficientPrivilegeException, DuplicateTableException, UnavailableTableLocationException, IOException {
 		System.out.println("\n*************** TEST ***************");	
 		int after = client.getTableList(null).size();
 		
@@ -82,39 +84,54 @@ public class TajoClientTableTest {
 		client.createExternalTable(tableName, BackendTestingUtil.mockupSchema, path.toUri(), BackendTestingUtil.mockupMeta);
 	
 		System.out.println("\n-------------- CREATE --------------");
-		System.out.println("Created database: " + tableName);
-		System.out.println("N. of databases: " + client.getTableList(null).size());
-		
-		int before = client.getTableList(null).size();
-		
-		System.out.println("\n-------------- RESULT --------------");
-		System.out.println("After: " + after);
-		System.out.println("Before: " + before);
+		System.out.println("Created table: " + tableName);
+		System.out.println("N. of tables: " + client.getTableList(null).size());
 		
 		assertTrue(client.existTable(tableName));
-		
-		System.out.println("\n************************************\n");
-	}
-	
-	@Test
-	public void dropExternalTableTest() throws UndefinedTableException, InsufficientPrivilegeException, DuplicateTableException, UnavailableTableLocationException, IOException {
-		System.out.println("\n*************** TEST ***************");	
-		int after = client.getTableList(null).size();
-		
-		Path path = createTempTable(tableName);
-		client.createExternalTable(tableName, BackendTestingUtil.mockupSchema, path.toUri(), BackendTestingUtil.mockupMeta);
-	
-		System.out.println("\n-------------- CREATE --------------");
-		System.out.println("Created database: " + tableName);
-		System.out.println("N. of databases: " + client.getTableList(null).size());
 
 		client.dropTable(tableName);
 		
 		int before = client.getTableList(null).size();
 		
 		System.out.println("\n-------------- DROP --------------");
-		System.out.println("Dropped database: " + tableName);
-		System.out.println("N. of databases: " + before);
+		System.out.println("Dropped table: " + tableName);
+		System.out.println("N. of tables: " + before);
+	
+		System.out.println("\n-------------- RESULT --------------");
+		System.out.println("After: " + after);
+		System.out.println("Before: " + before);
+		
+		assertFalse(client.existTable(tableName));
+		
+		System.out.println("\n************************************\n");
+	}
+	
+	@Test
+	public void createAndDropExternalTableByQueryTest() throws TajoException, IOException {
+		System.out.println("\n*************** TEST ***************");	
+		int after = client.getTableList(null).size();
+		
+		Path path = createTempTable(tableName);
+		String sql1 = "create external table " + tableName + " (deptname text, score int4) " 
+					+ "using csv location '" + path + "'";
+		
+		client.executeQueryAndGetResult(sql1);
+		
+		System.out.println("\n-------------- CREATE --------------");
+		System.out.println("Created table: " + tableName);
+		System.out.println("N. of tables: " + client.getTableList(null).size());
+		
+		assertTrue(client.existTable(tableName));
+
+		String sql2 = "drop table " + tableName;
+		
+		client.updateQuery(sql2);
+		
+		int before = client.getTableList(null).size();
+		
+		System.out.println("\n-------------- DROP --------------");
+		System.out.println("Dropped table: " + tableName);
+		System.out.println("N. of tables: " + before);
 	
 		System.out.println("\n-------------- RESULT --------------");
 		System.out.println("After: " + after);

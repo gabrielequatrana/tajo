@@ -1,6 +1,6 @@
 package org.apache.tajo.tests;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -10,6 +10,7 @@ import org.apache.tajo.client.TajoClient;
 import org.apache.tajo.exception.CannotDropCurrentDatabaseException;
 import org.apache.tajo.exception.DuplicateDatabaseException;
 import org.apache.tajo.exception.InsufficientPrivilegeException;
+import org.apache.tajo.exception.TajoException;
 import org.apache.tajo.exception.UndefinedDatabaseException;
 import org.apache.tajo.tests.util.TajoTestingCluster;
 import org.apache.tajo.tests.util.TpchTestBase;
@@ -36,7 +37,8 @@ public class TajoClientDatabaseTest {
 	@Parameters
 	public static Collection<Object[]> getParameters() {
 		return Arrays.asList(new Object[][] {
-			{ "test_database" }, 
+			{ "test_database" },
+			{ "" }
 		});
 	}
 
@@ -64,30 +66,9 @@ public class TajoClientDatabaseTest {
 			}
 		}
 	}
-
-	@Test
-	public void createDatabaseTest() throws DuplicateDatabaseException {
-		System.out.println("\n*************** TEST ***************");
-		int after = client.getAllDatabaseNames().size();
-
-		client.createDatabase(databaseName);
-
-		System.out.println("\n-------------- CREATE --------------");
-		System.out.println("Created database: " + databaseName);
-
-		int before = client.getAllDatabaseNames().size();
-
-		System.out.println("\n-------------- RESULT --------------");
-		System.out.println("After: " + after);
-		System.out.println("Before: " + before);
-
-		assertTrue(client.existDatabase(databaseName));
-
-		System.out.println("\n************************************\n");
-	}
 	
 	@Test
-	public void dropDatabaseTest() throws DuplicateDatabaseException, UndefinedDatabaseException, InsufficientPrivilegeException, CannotDropCurrentDatabaseException {
+	public void createAndDropDatabaseTest() throws DuplicateDatabaseException, UndefinedDatabaseException, InsufficientPrivilegeException, CannotDropCurrentDatabaseException {
 		System.out.println("\n*************** TEST ***************");
 		int after = client.getAllDatabaseNames().size();
 
@@ -96,6 +77,8 @@ public class TajoClientDatabaseTest {
 		System.out.println("\n-------------- CREATE --------------");
 		System.out.println("Created database: " + databaseName);
 		System.out.println("N. of databases: " + client.getAllDatabaseNames().size());
+		
+		assertTrue(client.existDatabase(databaseName));
 		
 		client.dropDatabase(databaseName);
 		
@@ -109,7 +92,41 @@ public class TajoClientDatabaseTest {
 		System.out.println("After: " + after);
 		System.out.println("Before: " + before);
 
-		assertEquals(after, before);
+		assertFalse(client.existDatabase(databaseName));
+
+		System.out.println("\n************************************\n");
+	}
+	
+	@Test
+	public void createAndDropDatabaseByQuery() throws TajoException {
+		System.out.println("\n*************** TEST ***************");
+		int after = client.getAllDatabaseNames().size();
+		
+		String sql1 = "create database " + databaseName;
+
+		client.executeQueryAndGetResult(sql1);
+
+		System.out.println("\n-------------- CREATE --------------");
+		System.out.println("Created database: " + databaseName);
+		System.out.println("N. of databases: " + client.getAllDatabaseNames().size());
+		
+		assertTrue(client.existDatabase(databaseName));
+		
+		String sql2 = "drop database " + databaseName;
+		
+		client.updateQuery(sql2);
+		
+		int before = client.getAllDatabaseNames().size();
+		
+		System.out.println("\n-------------- DROP --------------");
+		System.out.println("Dropped database: " + databaseName);
+		System.out.println("N. of databases: " + before);
+
+		System.out.println("\n-------------- RESULT --------------");
+		System.out.println("After: " + after);
+		System.out.println("Before: " + before);
+
+		assertFalse(client.existDatabase(databaseName));
 
 		System.out.println("\n************************************\n");
 	}
