@@ -3,7 +3,6 @@ package org.apache.tajo.tests;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -11,6 +10,7 @@ import org.apache.tajo.client.TajoClient;
 import org.apache.tajo.exception.CannotDropCurrentDatabaseException;
 import org.apache.tajo.exception.DuplicateDatabaseException;
 import org.apache.tajo.exception.InsufficientPrivilegeException;
+import org.apache.tajo.exception.SQLSyntaxError;
 import org.apache.tajo.exception.TajoException;
 import org.apache.tajo.exception.UndefinedDatabaseException;
 import org.apache.tajo.tests.util.TajoTestingCluster;
@@ -47,7 +47,7 @@ public class TajoClientDatabaseTest {
 	public static Collection<Object[]> getParameters() {
 		return Arrays.asList(new Object[][] {
 			{ "test_database", null },
-			{ "", SQLException.class }
+			{ "", SQLSyntaxError.class }
 		});
 	}
 
@@ -123,7 +123,7 @@ public class TajoClientDatabaseTest {
 		
 		int after = client.getAllDatabaseNames().size();
 		
-		String sql1 = "create database " + databaseName;
+		String sql1 = "create database '" + databaseName + "'";
 
 		client.executeQueryAndGetResult(sql1);
 
@@ -133,7 +133,7 @@ public class TajoClientDatabaseTest {
 		
 		assertTrue(client.existDatabase(databaseName));
 		
-		String sql2 = "drop database " + databaseName;
+		String sql2 = "drop database '" + databaseName + "'";
 		
 		client.updateQuery(sql2);
 		
