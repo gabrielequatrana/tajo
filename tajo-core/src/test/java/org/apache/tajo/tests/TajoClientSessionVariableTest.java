@@ -9,15 +9,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.tajo.client.TajoClient;
-import org.apache.tajo.exception.SQLSyntaxError;
 import org.apache.tajo.tests.util.TajoTestingCluster;
 import org.apache.tajo.tests.util.TpchTestBase;
 import org.apache.tajo.util.CommonTestingUtil;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -33,16 +30,10 @@ public class TajoClientSessionVariableTest {
 	private String sessionName;
 	private String sessionValue;
 	private Map<String, String> map;
-	private Class<? extends Exception> expectedException;
-	
-	@Rule
-	public ExpectedException exceptionRule = ExpectedException.none();
 
 	public TajoClientSessionVariableTest(String sessionName, String sessionValue, Class<? extends Exception> expectedException) {
 		this.sessionName = sessionName;
 		this.sessionValue = sessionValue;
-		this.expectedException = expectedException;
-		
 		map = new HashMap<>();
 		map.put(sessionName, sessionValue);
 	}
@@ -50,10 +41,10 @@ public class TajoClientSessionVariableTest {
 	@Parameters
 	public static Collection<Object[]> getParameters() {
 		return Arrays.asList(new Object[][] {
-			{ "test_name", "test_value", null },
-			{ "test_name", "", SQLSyntaxError.class },
-			{ "", "test_value", null },
-			{ "", "", null}
+			{ "test_name", "test_value" },
+			{ "test_name", "" },
+			{ "", "test_value" },
+			{ "", "" }
 		});
 	}
 	
@@ -82,13 +73,13 @@ public class TajoClientSessionVariableTest {
 		System.out.println("Updated varibale: " + sessionName + ":" + sessionValue);
 		System.out.println("N. of variables: " + client.getAllSessionVariables().size());
 		
-		assertTrue(client.getAllSessionVariables().containsKey(sessionName) && client.getAllSessionVariables().containsValue(sessionValue));
+		assertTrue(client.existSessionVariable(sessionName));
 		
 		client.unsetSessionVariables(Lists.newArrayList(sessionName));
 		
 		int before = client.getAllDatabaseNames().size();
 		
-		System.out.println("\n-------------- UNSER --------------");
+		System.out.println("\n-------------- UNSET --------------");
 		System.out.println("Unsetted varibale: " + sessionName + ":" + sessionValue);
 		System.out.println("N. of varibales: " + before);
 
@@ -96,7 +87,7 @@ public class TajoClientSessionVariableTest {
 		System.out.println("After: " + after);
 		System.out.println("Before: " + before);
 
-		assertFalse(client.getAllSessionVariables().containsKey(sessionName) || client.getAllSessionVariables().containsValue(sessionValue));
+		assertFalse(client.existSessionVariable(sessionName));
 
 		System.out.println("\n************************************\n");	
 	}
