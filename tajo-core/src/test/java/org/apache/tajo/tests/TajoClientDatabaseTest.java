@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.apache.tajo.client.TajoClient;
-import org.apache.tajo.client.TajoClientImpl;
 import org.apache.tajo.exception.CannotDropCurrentDatabaseException;
 import org.apache.tajo.exception.DuplicateDatabaseException;
 import org.apache.tajo.exception.InsufficientPrivilegeException;
@@ -15,10 +14,8 @@ import org.apache.tajo.exception.SQLSyntaxError;
 import org.apache.tajo.exception.TajoException;
 import org.apache.tajo.exception.TajoInternalError;
 import org.apache.tajo.exception.UndefinedDatabaseException;
-import org.apache.tajo.service.ServiceTrackerFactory;
 import org.apache.tajo.tests.util.TajoTestingCluster;
 import org.apache.tajo.tests.util.TpchTestBase;
-import org.apache.tajo.util.CommonTestingUtil;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -57,9 +54,7 @@ public class TajoClientDatabaseTest {
 	@BeforeClass
 	public static void setUp() throws Exception {
 		cluster = TpchTestBase.getInstance().getTestingCluster();
-		cluster.getConfiguration();
-		client = new TajoClientImpl(ServiceTrackerFactory.get(cluster.getConfiguration()));
-		CommonTestingUtil.getTestDir();
+		client = cluster.newTajoClient();
 	}
 
 	@AfterClass

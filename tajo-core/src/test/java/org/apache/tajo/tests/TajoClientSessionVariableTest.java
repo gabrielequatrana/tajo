@@ -11,7 +11,6 @@ import java.util.Map;
 import org.apache.tajo.client.TajoClient;
 import org.apache.tajo.tests.util.TajoTestingCluster;
 import org.apache.tajo.tests.util.TpchTestBase;
-import org.apache.tajo.util.CommonTestingUtil;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -51,9 +50,7 @@ public class TajoClientSessionVariableTest {
 	@BeforeClass
 	public static void setUp() throws Exception {
 		cluster = TpchTestBase.getInstance().getTestingCluster();
-		cluster.getConfiguration();
 		client = cluster.newTajoClient();
-		CommonTestingUtil.getTestDir();
 	}
 
 	@AfterClass
