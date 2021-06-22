@@ -162,11 +162,7 @@ public class TajoClientDatabaseTest {
 		System.out.println("Created database: " + databaseName);
 		System.out.println("N. of databases: " + client.getAllDatabaseNames().size());
 
-		try {
-			client.createDatabase(databaseName);
-		} catch (DuplicateDatabaseException e) {
-			assertTrue(true);
-		}
+		client.createDatabase(databaseName);
 
 		System.out.println("\n------------- CREATE_2 -------------");
 		System.out.println("Database name: " + databaseName);
