@@ -31,7 +31,7 @@ public class TajoClientSessionVariableTest {
 	private String sessionValue;
 	private Map<String, String> map;
 
-	public TajoClientSessionVariableTest(String sessionName, String sessionValue, Class<? extends Exception> expectedException) {
+	public TajoClientSessionVariableTest(String sessionName, String sessionValue) {
 		this.sessionName = sessionName;
 		this.sessionValue = sessionValue;
 		map = new HashMap<>();
