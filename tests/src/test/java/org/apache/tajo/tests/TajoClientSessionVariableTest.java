@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.tajo.client.TajoClient;
-import org.apache.tajo.util.test.TajoTestingCluster;
-import org.apache.tajo.util.test.TpchTestBase;
+import org.apache.tajo.tests.util.TajoTestingCluster;
+import org.apache.tajo.tests.util.TpchTestBase;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

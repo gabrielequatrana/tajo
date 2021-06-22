@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.apache.tajo.util.test;
+package org.apache.tajo.tests.util;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Closeables;

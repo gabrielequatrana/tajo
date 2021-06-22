@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.apache.tajo.util.test;
+package org.apache.tajo.tests.util;
 
 import com.google.common.base.Preconditions;
 import org.apache.commons.logging.Log;
