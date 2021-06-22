@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.apache.tajo.tests.util;
+package org.apache.tajo.util.test;
 
 import org.apache.tajo.annotation.NotNull;
 import org.apache.tajo.annotation.Nullable;

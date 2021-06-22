@@ -19,10 +19,11 @@ import org.apache.tajo.exception.UnavailableTableLocationException;
 import org.apache.tajo.exception.UndefinedDatabaseException;
 import org.apache.tajo.exception.UndefinedTableException;
 import org.apache.tajo.storage.StorageUtil;
-import org.apache.tajo.tests.util.BackendTestingUtil;
-import org.apache.tajo.tests.util.TajoTestingCluster;
-import org.apache.tajo.tests.util.TpchTestBase;
+
 import org.apache.tajo.util.CommonTestingUtil;
+import org.apache.tajo.util.test.BackendTestingUtil;
+import org.apache.tajo.util.test.TajoTestingCluster;
+import org.apache.tajo.util.test.TpchTestBase;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
