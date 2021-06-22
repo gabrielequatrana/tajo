@@ -33,7 +33,7 @@ import org.junit.runners.Parameterized.Parameters;
 public class TajoClientDatabaseTest {
 
 	private static TajoTestingCluster cluster;
-	private static TajoClient client;
+	private static TajoClientImpl client;
 	
 	private String databaseName;
 	private Class<? extends Exception> expectedException;
