@@ -341,6 +341,7 @@
 			<groupId>org.apache.hbase</groupId>
 			<artifactId>hbase-server</artifactId>
 			<version>${hbase.version}</version>
+			<type>test-jar</type>
 			<exclusions>
 				<exclusion>
 					<artifactId>netty-all</artifactId>
@@ -363,11 +364,13 @@
 			<groupId>org.apache.hbase</groupId>
 			<artifactId>hbase-hadoop-compat</artifactId>
 			<version>${hbase.version}</version>
+			<type>test-jar</type>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.hbase</groupId>
 			<artifactId>hbase-hadoop2-compat</artifactId>
 			<version>${hbase.version}</version>
+			<type>test-jar</type>
 			<exclusions>
 				<exclusion>
 					<artifactId>jdk.tools</artifactId>
