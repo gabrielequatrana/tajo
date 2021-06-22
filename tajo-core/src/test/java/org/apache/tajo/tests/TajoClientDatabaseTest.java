@@ -151,15 +151,13 @@ public class TajoClientDatabaseTest {
 	}
 	
 	@Test
-	public void createDuplicateDatabaseTest() {
+	public void createDuplicateDatabaseTest() throws DuplicateDatabaseException {
 		System.out.println("\n*************** TEST ***************");
 		
-		try {
-			client.createDatabase(databaseName);
-		} catch (DuplicateDatabaseException e) {
-			assertTrue(true);
-		}
+		exceptionRule.expect(DuplicateDatabaseException.class);
 		
+		client.createDatabase(databaseName);
+
 		System.out.println("\n------------- CREATE_1 -------------");
 		System.out.println("Created database: " + databaseName);
 		System.out.println("N. of databases: " + client.getAllDatabaseNames().size());
@@ -179,8 +177,10 @@ public class TajoClientDatabaseTest {
 	}
 	
 	@Test
-	public void dropCurrentDatabaseTest() throws DuplicateDatabaseException, UndefinedDatabaseException, InsufficientPrivilegeException {
+	public void dropCurrentDatabaseTest() throws DuplicateDatabaseException, UndefinedDatabaseException, InsufficientPrivilegeException, CannotDropCurrentDatabaseException {
 		System.out.println("\n*************** TEST ***************");
+		
+		exceptionRule.expect(TajoInternalError.class);
 
 		client.createDatabase(databaseName);
 		client.selectDatabase(databaseName);
@@ -189,11 +189,7 @@ public class TajoClientDatabaseTest {
 		System.out.println("Created database: " + databaseName);
 		System.out.println("Selected database: " + client.getCurrentDatabase());
 		
-		try {
-			client.dropDatabase(databaseName);
-		} catch (CannotDropCurrentDatabaseException | TajoInternalError e) {
-			assertTrue(true);
-		}
+		client.dropDatabase(databaseName);
 
 		System.out.println("\n-------------- DROP --------------");
 		System.out.println("Current database: " + databaseName);

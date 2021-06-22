@@ -157,6 +157,118 @@ public class TajoClientTableTest {
 		System.out.println("\n************************************\n");
 	}
 	
+	@Test
+	public void createAndPurgeExternalTableTest() throws UndefinedTableException, InsufficientPrivilegeException, DuplicateTableException, UnavailableTableLocationException, IOException {
+		System.out.println("\n*************** TEST ***************");
+		
+		int after = client.getTableList(null).size();
+		
+		Path path = createTempTable(tableName);
+		client.createExternalTable(tableName, BackendTestingUtil.mockupSchema, path.toUri(), BackendTestingUtil.mockupMeta);
+	
+		System.out.println("\n-------------- CREATE --------------");
+		System.out.println("Created table: " + tableName);
+		System.out.println("N. of tables: " + client.getTableList(null).size());
+		
+		assertTrue(client.existTable(tableName));
+
+		client.dropTable(tableName, true);
+		
+		int before = client.getTableList(null).size();
+		
+		System.out.println("\n-------------- DROP --------------");
+		System.out.println("Dropped table: " + tableName);
+		System.out.println("N. of tables: " + before);
+	
+		System.out.println("\n-------------- RESULT --------------");
+		System.out.println("After: " + after);
+		System.out.println("Before: " + before);
+		
+		assertFalse(client.existTable(tableName));
+		
+		System.out.println("\n************************************\n");
+	}
+	
+	@Test
+	public void createAndDropTableByQueryTest() throws TajoException, IOException {
+		System.out.println("\n*************** TEST ***************");	
+		
+		if (expectedException != null) {
+			exceptionRule.expect(expectedException);
+			System.out.println("Raised exception: " + expectedException.getName());
+		}
+		
+		int after = client.getTableList(null).size();
+
+		String sql1 = "create table " + tableName + " (deptname text, score int4)";
+		
+		client.updateQuery(sql1);
+		
+		System.out.println("\n-------------- CREATE --------------");
+		System.out.println("Created table: " + tableName);
+		System.out.println("N. of tables: " + client.getTableList(null).size());
+		
+		assertTrue(client.existTable(tableName));
+
+		String sql2 = "drop table " + tableName;
+		
+		client.updateQuery(sql2);
+		
+		int before = client.getTableList(null).size();
+		
+		System.out.println("\n-------------- DROP --------------");
+		System.out.println("Dropped table: " + tableName);
+		System.out.println("N. of tables: " + before);
+	
+		System.out.println("\n-------------- RESULT --------------");
+		System.out.println("After: " + after);
+		System.out.println("Before: " + before);
+		
+		assertFalse(client.existTable(tableName));
+		
+		System.out.println("\n************************************\n");
+	}
+	
+	@Test
+	public void createAndPurgeTableByQueryTest() throws TajoException, IOException {
+		System.out.println("\n*************** TEST ***************");	
+		
+		if (expectedException != null) {
+			exceptionRule.expect(expectedException);
+			System.out.println("Raised exception: " + expectedException.getName());
+		}
+		
+		int after = client.getTableList(null).size();
+
+		String sql1 = "create table " + tableName + " (deptname text, score int4)";
+		
+		client.updateQuery(sql1);
+		
+		System.out.println("\n-------------- CREATE --------------");
+		System.out.println("Created table: " + tableName);
+		System.out.println("N. of tables: " + client.getTableList(null).size());
+		
+		assertTrue(client.existTable(tableName));
+
+		String sql2 = "drop table " + tableName + " purge";
+		
+		client.updateQuery(sql2);
+		
+		int before = client.getTableList(null).size();
+		
+		System.out.println("\n-------------- DROP --------------");
+		System.out.println("Dropped table: " + tableName);
+		System.out.println("N. of tables: " + before);
+	
+		System.out.println("\n-------------- RESULT --------------");
+		System.out.println("After: " + after);
+		System.out.println("Before: " + before);
+		
+		assertFalse(client.existTable(tableName));
+		
+		System.out.println("\n************************************\n");
+	}
+	
 	private Path createTempTable(String tableName) throws IOException {
 		Path tablePath = StorageUtil.concatPath(testDir, tableName);
 		BackendTestingUtil.writeTmpTable(conf, tablePath);
