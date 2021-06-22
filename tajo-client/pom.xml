@@ -52,7 +52,7 @@
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.rat</groupId>
 				<artifactId>apache-rat-plugin</artifactId>
@@ -70,7 +70,7 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
@@ -197,6 +197,16 @@
 		<dependency>
 			<groupId>org.apache.tajo</groupId>
 			<artifactId>tajo-rpc-protobuf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tajo</groupId>
+			<artifactId>tajo-core</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.tajo</groupId>
+					<artifactId>tajo-client</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -357,9 +367,12 @@
 											echo
 											echo "Current directory `pwd`"
 											echo
-											run rm -rf ${project.artifactId}-${project.version}
-											run mkdir ${project.artifactId}-${project.version}
-											run cd ${project.artifactId}-${project.version}
+											run rm -rf
+											${project.artifactId}-${project.version}
+											run mkdir
+											${project.artifactId}-${project.version}
+											run cd
+											${project.artifactId}-${project.version}
 											run cp -r
 											${basedir}/target/${project.artifactId}-${project.version}*.jar
 											.
