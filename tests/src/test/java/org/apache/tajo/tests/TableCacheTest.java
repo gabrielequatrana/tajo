@@ -41,13 +41,13 @@ public class TableCacheTest {
 	}
 
 	@Parameters
-	public static Collection<Object[]> getParameters() {
+	public static Collection<Object[]> getParameters() throws Exception {
 		ExecutionBlockId ebId = QueryIdFactory.newExecutionBlockId(QueryIdFactory.newQueryId(System.currentTimeMillis(), 0));
 		TableCacheKey key = new TableCacheKey(ebId.toString(), "testTableCache", "path");
 		ExecutionBlockSharedResource resource = new ExecutionBlockSharedResource();
 		
 		return Arrays.asList(new Object[][] { 
-			{ key, createTask(key, resource), null } 
+			{ key, createTask(key, resource).call(), null } 
 		});
 	}
 
