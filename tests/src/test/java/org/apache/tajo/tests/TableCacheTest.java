@@ -13,6 +13,7 @@ import org.apache.tajo.engine.utils.CacheHolder;
 import org.apache.tajo.engine.utils.TableCache;
 import org.apache.tajo.engine.utils.TableCacheKey;
 import org.apache.tajo.worker.ExecutionBlockSharedResource;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -49,6 +50,11 @@ public class TableCacheTest {
 		return Arrays.asList(new Object[][] { 
 			{ key, createTask(key, resource).call(), null } 
 		});
+	}
+	
+	@Before
+	public void setUp() {
+		tableCache = TableCache.getInstance();
 	}
 
 	@Test
