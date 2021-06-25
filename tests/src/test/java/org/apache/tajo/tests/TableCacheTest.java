@@ -41,7 +41,7 @@ public class TableCacheTest {
 	}
 
 	@Parameters
-	public Collection<Object[]> getParameters() {
+	public static Collection<Object[]> getParameters() {
 		ExecutionBlockId ebId = QueryIdFactory.newExecutionBlockId(QueryIdFactory.newQueryId(System.currentTimeMillis(), 0));
 		TableCacheKey key = new TableCacheKey(ebId.toString(), "testTableCache", "path");
 		ExecutionBlockSharedResource resource = new ExecutionBlockSharedResource();
@@ -62,7 +62,7 @@ public class TableCacheTest {
 		assertTrue(tableCache.hasCache(cacheKey));
 	}
 
-	private Callable<CacheHolder<Long>> createTask(TableCacheKey key, ExecutionBlockSharedResource resource) {
+	private static Callable<CacheHolder<Long>> createTask(TableCacheKey key, ExecutionBlockSharedResource resource) {
 		return new Callable<CacheHolder<Long>>() {
 			@Override
 			public CacheHolder<Long> call() throws Exception {
