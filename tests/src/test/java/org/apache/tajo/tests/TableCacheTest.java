@@ -47,7 +47,7 @@ public class TableCacheTest {
 		ExecutionBlockSharedResource resource = new ExecutionBlockSharedResource();
 		
 		return Arrays.asList(new Object[][] { 
-			{ key, createTask(key, resource) } 
+			{ key, createTask(key, resource), null } 
 		});
 	}
 
