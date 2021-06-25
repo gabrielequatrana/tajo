@@ -16,8 +16,11 @@ import org.apache.tajo.worker.ExecutionBlockSharedResource;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+@RunWith(Parameterized.class)
 public class TableCacheTest {
 
 	// TableCache instance
