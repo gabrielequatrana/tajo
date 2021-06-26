@@ -108,6 +108,8 @@ public class TableCacheGetCacheKeyByExecutionBlockIdTest {
 		System.out.println("Cache data 3: " + cacheData3.toString());
 
 		List<TableCacheKey> actualKeys = tableCache.getCacheKeyByExecutionBlockId(ebId);
+		System.out.println("AAA: " + actualKeys.size());
+		System.out.println("BBB: " + actualKeys);
 		for (int i = 0; i < 3; i++) {
 			assertEquals(cacheKeys.get(i), actualKeys.get(i));
 		}

@@ -52,6 +52,7 @@ public class TableCacheAddCacheTest {
 		TableCacheKey key;
 		ExecutionBlockSharedResource resource = new ExecutionBlockSharedResource();
 		List<TableCacheTestParameters> parameters = new ArrayList<>();
+		ebId = QueryIdFactory.newExecutionBlockId(QueryIdFactory.newQueryId(System.currentTimeMillis(), 0));
 		
 		key = new TableCacheKey(ebId.toString(), "testTableCache", "path");
 		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, resource).call(), null));
@@ -70,7 +71,6 @@ public class TableCacheAddCacheTest {
 	@BeforeClass
 	public static void setUp() {
 		tableCache = TableCache.getInstance();
-		ebId = QueryIdFactory.newExecutionBlockId(QueryIdFactory.newQueryId(System.currentTimeMillis(), 0));
 	}
 	
 	@After
