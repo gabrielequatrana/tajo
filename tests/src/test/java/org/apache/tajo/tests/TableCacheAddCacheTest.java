@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import org.apache.tajo.ExecutionBlockId;
 import org.apache.tajo.QueryIdFactory;
 import org.apache.tajo.engine.utils.CacheHolder;
@@ -14,7 +15,7 @@ import org.apache.tajo.tests.util.TableCacheTestParameters;
 import org.apache.tajo.tests.util.TableCacheTestUtil;
 import org.apache.tajo.worker.ExecutionBlockSharedResource;
 import org.junit.After;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -66,8 +67,8 @@ public class TableCacheAddCacheTest {
 		return parameters;
 	}
 	
-	@BeforeClass
-	public static void setUp() {
+	@Before
+	public void setUp() {
 		tableCache = TableCache.getInstance();
 	}
 	
