@@ -74,6 +74,7 @@ public class TableCacheAddCacheTest {
 	
 	@After
 	public void cleanUp() {
+		System.out.println("a " + ebId);
 		tableCache.releaseCache(ebId);
 	}
 
