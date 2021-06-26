@@ -16,7 +16,7 @@ import org.apache.tajo.tests.util.TableCacheTestParameters;
 import org.apache.tajo.tests.util.TableCacheTestUtil;
 import org.apache.tajo.worker.ExecutionBlockSharedResource;
 import org.junit.After;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -29,7 +29,7 @@ import org.junit.runners.model.MultipleFailureException;
 public class TableCacheGetCacheTest {
 
 	// TableCache instance
-	private static TableCache tableCache;
+	private TableCache tableCache;
 
 	// Test parameters
 	private TableCacheKey cacheKey;
@@ -37,7 +37,7 @@ public class TableCacheGetCacheTest {
 
 	// Testing environment
 	private static ExecutionBlockId ebId;
-	private static ExecutionBlockSharedResource resource;
+	private ExecutionBlockSharedResource resource;
 	
 	@Rule
 	public ExpectedException exceptionRule = ExpectedException.none();
@@ -65,8 +65,9 @@ public class TableCacheGetCacheTest {
 		return parameters;
 	}
 
-	@BeforeClass
-	public static void setUp() {
+	@Before
+	public void setUp() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		TableCacheTestUtil.reset();
 		tableCache = TableCache.getInstance();
 		resource = new ExecutionBlockSharedResource();
 	}

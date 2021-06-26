@@ -15,20 +15,19 @@ import org.apache.tajo.tests.util.TableCacheTestParameters;
 import org.apache.tajo.tests.util.TableCacheTestUtil;
 import org.apache.tajo.worker.ExecutionBlockSharedResource;
 import org.junit.After;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-import org.junit.runners.model.MultipleFailureException;
 
 @RunWith(Parameterized.class)
 public class TableCacheAddCacheTest {
 
 	// TableCache instance
-	private static TableCache tableCache;
+	private TableCache tableCache;
 
 	// Test parameters
 	private TableCacheKey cacheKey;
@@ -68,16 +67,15 @@ public class TableCacheAddCacheTest {
 		return parameters;
 	}
 	
-	@BeforeClass
-	public static void setUp() {
+	@Before
+	public void setUp() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		TableCacheTestUtil.reset();
 		tableCache = TableCache.getInstance();
 	}
 	
 	@After
 	public void cleanUp() {
-		if (tableCache.hasCache(cacheKey)) {
-			tableCache.releaseCache(ebId);
-		}
+		tableCache.releaseCache(ebId);
 	}
 
 	@Test

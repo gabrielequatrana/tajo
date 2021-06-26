@@ -1,5 +1,6 @@
 package org.apache.tajo.tests.util;
 
+import java.lang.reflect.Field;
 import java.util.concurrent.Callable;
 
 import org.apache.tajo.catalog.statistics.TableStats;
@@ -56,4 +57,9 @@ public class TableCacheTestUtil {
 		};
 	}
 	
+	public static void reset() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		Field instance = TableCache.class.getDeclaredField("instance");
+		instance.setAccessible(true);
+		instance.set(null, null);
+	}
 }
