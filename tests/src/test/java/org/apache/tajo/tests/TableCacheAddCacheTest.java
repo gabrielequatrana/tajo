@@ -59,10 +59,10 @@ public class TableCacheAddCacheTest {
 		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, null).call(), MultipleFailureException.class));
 		key = new TableCacheKey(ebId.toString(), "", "path");
 		parameters.add(new TableCacheTestParameters(key, null, MultipleFailureException.class));
-		key = new TableCacheKey(null, "testTableCache", "");
-		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, resource).call(), NullPointerException.class));
-		/*key = null;
-		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, resource).call(), MultipleFailureException.class));*/
+		/*key = new TableCacheKey(null, "testTableCache", "");
+		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, resource).call(), NullPointerException.class));*/
+		key = null;
+		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, resource).call(), MultipleFailureException.class));
 		
 		return parameters;
 	}
