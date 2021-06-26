@@ -90,6 +90,7 @@ public class TableCacheGetCacheKeyByExecutionBlockIdTest {
 
 	@After
 	public void cleanUp() {
+		if (!tableCache.hasCache(cacheKey1))
 		tableCache.releaseCache(ebId);
 	}
 
