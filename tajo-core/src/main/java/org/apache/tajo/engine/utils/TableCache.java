@@ -62,6 +62,7 @@ import java.util.Map;
   public synchronized List<TableCacheKey> getCacheKeyByExecutionBlockId(ExecutionBlockId ebId) {
     List<TableCacheKey> keys = Lists.newArrayList();
     for (TableCacheKey eachKey : cacheMap.keySet()) {
+    	System.out.println("AAAA " + eachKey);
       if (eachKey.ebId.equals(ebId.toString())) {
         keys.add(eachKey);
       }
