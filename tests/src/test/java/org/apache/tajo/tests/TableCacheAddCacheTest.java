@@ -2,8 +2,10 @@ package org.apache.tajo.tests;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.apache.tajo.ExecutionBlockId;
@@ -12,6 +14,7 @@ import org.apache.tajo.catalog.statistics.TableStats;
 import org.apache.tajo.engine.utils.CacheHolder;
 import org.apache.tajo.engine.utils.TableCache;
 import org.apache.tajo.engine.utils.TableCacheKey;
+import org.apache.tajo.tests.util.TableCacheTestParameters;
 import org.apache.tajo.tests.util.TableCacheTestUtil;
 import org.apache.tajo.worker.ExecutionBlockSharedResource;
 import org.junit.After;
@@ -37,62 +40,34 @@ public class TableCacheAddCacheTest {
 	
 	// Testing environment
 	private static ExecutionBlockId ebId = QueryIdFactory.newExecutionBlockId(QueryIdFactory.newQueryId(System.currentTimeMillis(), 0));
-	private static int param = 0;
 	
 	@Rule
 	public ExpectedException exceptionRule = ExpectedException.none();
 
-	public TableCacheAddCacheTest(TableCacheKey cacheKey, CacheHolder<?> cacheData, Class<? extends Exception> expectedException) {
-		this.cacheKey = cacheKey;
-		this.cacheData = cacheData;
-		this.expectedException = expectedException;
+	public TableCacheAddCacheTest(TableCacheTestParameters parameters) {
+		this.cacheKey = parameters.getCacheKey();
+		this.cacheData = parameters.getCacheData();
+		this.expectedException = parameters.getExpectedException();
 	}
 
 	@Parameters
-	public static Collection<Object[]> getParameters() throws Exception {
+	public static Collection<TableCacheTestParameters> getParameters() throws Exception {
 		TableCacheKey key;
-		ExecutionBlockSharedResource resource;
+		ExecutionBlockSharedResource resource = new ExecutionBlockSharedResource();
+		List<TableCacheTestParameters> parameters = new ArrayList<>();
 		
-		switch(param) {
-		case 0:
-			key = new TableCacheKey(ebId.toString(), "testTableCache", "path");
-			resource = new ExecutionBlockSharedResource();
-			break;
-			
-		case 1:
-			key = new TableCacheKey(ebId.toString(), "testTableCache", "path");
-			resource = null;
-			break;
-			
-		case 2:
-			key = new TableCacheKey(ebId.toString(), "", "path");
-			resource = new ExecutionBlockSharedResource();
-			break;
-			
-		case 3:
-			key = new TableCacheKey(null, "testTableCache", "");
-			resource = new ExecutionBlockSharedResource();
-			break;
-			
-		case 4:
-			key = null;
-			resource = new ExecutionBlockSharedResource();
-			break;
-	
-		default:
-			key = new TableCacheKey(ebId.toString(), "testTableCache", "path");
-			resource = new ExecutionBlockSharedResource();
-			break;
-		}
-		param++;
+		key = new TableCacheKey(ebId.toString(), "testTableCache", "path");
+		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, resource).call(), null));
+		key = new TableCacheKey(ebId.toString(), "testTableCache", "path");
+		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, null).call(), null));
+		key = new TableCacheKey(ebId.toString(), "", "path");
+		parameters.add(new TableCacheTestParameters(key, null, null));
+		key = new TableCacheKey(null, "testTableCache", "");
+		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, resource).call(), null));
+		key = null;
+		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, resource).call(), null));
 		
-		return Arrays.asList(new Object[][] { 
-			{ key, TableCacheTestUtil.createCacheData(key, resource).call(), null },
-			{ key, TableCacheTestUtil.createCacheData(key, resource).call(), null },
-			{ key, TableCacheTestUtil.createCacheData(key, resource).call(), null },
-			{ key, TableCacheTestUtil.createCacheData(key, resource).call(), null },
-			{ key, TableCacheTestUtil.createCacheData(key, resource).call(), null }
-		});
+		return parameters;
 	}
 	
 	@BeforeClass
