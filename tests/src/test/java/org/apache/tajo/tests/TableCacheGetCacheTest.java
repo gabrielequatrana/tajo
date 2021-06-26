@@ -57,7 +57,7 @@ public class TableCacheGetCacheTest {
 		key = new TableCacheKey("", "testTableCache", "");
 		parameters.add(new TableCacheTestParameters(key, null));
 		key = new TableCacheKey(ebId.toString(), "", "path");
-		parameters.add(new TableCacheTestParameters(key, MultipleFailureException.class));
+		parameters.add(new TableCacheTestParameters(key, null));
 		key = null;
 		parameters.add(new TableCacheTestParameters(key, MultipleFailureException.class));
 
