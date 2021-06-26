@@ -36,7 +36,7 @@ public class TableCacheAddCacheTest {
 	private Class<? extends Exception> expectedException;
 	
 	// Testing environment
-	private static ExecutionBlockId ebId = QueryIdFactory.newExecutionBlockId(QueryIdFactory.newQueryId(System.currentTimeMillis(), 0));
+	private static ExecutionBlockId ebId;
 	
 	@Rule
 	public ExpectedException exceptionRule = ExpectedException.none();
@@ -70,6 +70,7 @@ public class TableCacheAddCacheTest {
 	@BeforeClass
 	public static void setUp() {
 		tableCache = TableCache.getInstance();
+		ebId = QueryIdFactory.newExecutionBlockId(QueryIdFactory.newQueryId(System.currentTimeMillis(), 0));
 	}
 	
 	@After
