@@ -61,8 +61,8 @@ public class TableCacheAddCacheTest {
 		parameters.add(new TableCacheTestParameters(key, null, MultipleFailureException.class));
 		key = new TableCacheKey(null, "testTableCache", "");
 		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, resource).call(), NullPointerException.class));
-		key = null;
-		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, resource).call(), MultipleFailureException.class));
+		/*key = null;
+		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, resource).call(), MultipleFailureException.class));*/
 		
 		return parameters;
 	}
@@ -86,8 +86,7 @@ public class TableCacheAddCacheTest {
 			exceptionRule.expect(expectedException);
 			System.out.println("Raised exception: " + expectedException.getName());
 		}
-
-		if (!(expectedException == NullPointerException.class))
+		
 		tableCache.addCache(cacheKey, cacheData);
 		
 		System.out.println("\n-------------- ADD --------------");
