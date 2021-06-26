@@ -12,9 +12,11 @@ import org.apache.tajo.catalog.statistics.TableStats;
 import org.apache.tajo.engine.utils.CacheHolder;
 import org.apache.tajo.engine.utils.TableCache;
 import org.apache.tajo.engine.utils.TableCacheKey;
+import org.apache.tajo.tests.util.TableCacheTestUtil;
 import org.apache.tajo.worker.ExecutionBlockSharedResource;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -23,22 +25,24 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 @RunWith(Parameterized.class)
-public class TableCacheTest {
+public class TableCacheAddCacheTest {
 
 	// TableCache instance
-	private TableCache tableCache;
+	private static TableCache tableCache;
 
 	// Test parameters
 	private TableCacheKey cacheKey;
 	private CacheHolder<?> cacheData;
 	private Class<? extends Exception> expectedException;
 	
+	// Testing environment
 	private static ExecutionBlockId ebId = QueryIdFactory.newExecutionBlockId(QueryIdFactory.newQueryId(System.currentTimeMillis(), 0));
-
+	private static int param = 0;
+	
 	@Rule
 	public ExpectedException exceptionRule = ExpectedException.none();
 
-	public TableCacheTest(TableCacheKey cacheKey, CacheHolder<?> cacheData, Class<? extends Exception> expectedException) {
+	public TableCacheAddCacheTest(TableCacheKey cacheKey, CacheHolder<?> cacheData, Class<? extends Exception> expectedException) {
 		this.cacheKey = cacheKey;
 		this.cacheData = cacheData;
 		this.expectedException = expectedException;
@@ -46,75 +50,79 @@ public class TableCacheTest {
 
 	@Parameters
 	public static Collection<Object[]> getParameters() throws Exception {
+		TableCacheKey key;
+		ExecutionBlockSharedResource resource;
 		
-		TableCacheKey key = new TableCacheKey(ebId.toString(), "testTableCache", "path");
-		ExecutionBlockSharedResource resource = new ExecutionBlockSharedResource();
+		switch(param) {
+		case 0:
+			key = new TableCacheKey(ebId.toString(), "testTableCache", "path");
+			resource = new ExecutionBlockSharedResource();
+			break;
+			
+		case 1:
+			key = new TableCacheKey(ebId.toString(), "testTableCache", "path");
+			resource = null;
+			break;
+			
+		case 2:
+			key = new TableCacheKey(ebId.toString(), "", "path");
+			resource = new ExecutionBlockSharedResource();
+			break;
+			
+		case 3:
+			key = new TableCacheKey(null, "testTableCache", "");
+			resource = new ExecutionBlockSharedResource();
+			break;
+			
+		case 4:
+			key = null;
+			resource = new ExecutionBlockSharedResource();
+			break;
+	
+		default:
+			key = new TableCacheKey(ebId.toString(), "testTableCache", "path");
+			resource = new ExecutionBlockSharedResource();
+			break;
+		}
+		param++;
 		
 		return Arrays.asList(new Object[][] { 
-			{ key, createTask(key, resource).call(), null } 
+			{ key, TableCacheTestUtil.createCacheData(key, resource).call(), null },
+			{ key, TableCacheTestUtil.createCacheData(key, resource).call(), null },
+			{ key, TableCacheTestUtil.createCacheData(key, resource).call(), null },
+			{ key, TableCacheTestUtil.createCacheData(key, resource).call(), null },
+			{ key, TableCacheTestUtil.createCacheData(key, resource).call(), null }
 		});
 	}
 	
-	@Before
-	public void setUp() {
+	@BeforeClass
+	public static void setUp() {
 		tableCache = TableCache.getInstance();
 	}
 	
 	@After
 	public void cleanUp() {
 		tableCache.releaseCache(ebId);
-		System.out.println("A: " + tableCache.hasCache(cacheKey));
 	}
 
 	@Test
 	public void addCacheTest() {
-		System.out.println("ADD");
+		System.out.println("\n*************** TEST ***************");
+		
+		if (expectedException != null) {
+			exceptionRule.expect(expectedException);
+			System.out.println("Raised exception: " + expectedException.getName());
+		}
+
 		tableCache.addCache(cacheKey, cacheData);
 		
-		System.out.println("RESULT");
-		System.out.println("A: " + tableCache.hasCache(cacheKey));
+		System.out.println("\n-------------- ADD --------------");
+		System.out.println("Cache key: " + cacheKey.toString());
+		System.out.println("Cache data size: " + cacheData.toString());
+		System.out.println("Has cache: " + tableCache.hasCache(cacheKey));
 		
 		assertTrue(tableCache.hasCache(cacheKey));
-	}
-
-	private static Callable<CacheHolder<Long>> createTask(TableCacheKey key, ExecutionBlockSharedResource resource) {
-		return new Callable<CacheHolder<Long>>() {
-			@Override
-			public CacheHolder<Long> call() throws Exception {
-				CacheHolder<Long> result;
-				synchronized (resource.getLock()) {
-					if (!TableCache.getInstance().hasCache(key)) {
-						final long nanoTime = System.nanoTime();
-						final TableStats tableStats = new TableStats();
-						tableStats.setNumRows(100);
-						tableStats.setNumBytes(1000);
-
-						final CacheHolder<Long> cacheHolder = new CacheHolder<Long>() {
-
-							@Override
-							public Long getData() {
-								return nanoTime;
-							}
-
-							@Override
-							public TableStats getTableStats() {
-								return tableStats;
-							}
-
-							@Override
-							public void release() {
-
-							}
-						};
-
-						resource.addBroadcastCache(key, cacheHolder);
-					}
-				}
-
-				CacheHolder<?> holder = resource.getBroadcastCache(key);
-				result = (CacheHolder<Long>) holder;
-				return result;
-			}
-		};
+		
+		System.out.println("\n************************************\n");
 	}
 }
