@@ -3,14 +3,10 @@ package org.apache.tajo.tests;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.Callable;
-
 import org.apache.tajo.ExecutionBlockId;
 import org.apache.tajo.QueryIdFactory;
-import org.apache.tajo.catalog.statistics.TableStats;
 import org.apache.tajo.engine.utils.CacheHolder;
 import org.apache.tajo.engine.utils.TableCache;
 import org.apache.tajo.engine.utils.TableCacheKey;
@@ -18,7 +14,6 @@ import org.apache.tajo.tests.util.TableCacheTestParameters;
 import org.apache.tajo.tests.util.TableCacheTestUtil;
 import org.apache.tajo.worker.ExecutionBlockSharedResource;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,6 +21,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+import org.junit.runners.model.MultipleFailureException;
 
 @RunWith(Parameterized.class)
 public class TableCacheAddCacheTest {
@@ -59,13 +55,13 @@ public class TableCacheAddCacheTest {
 		key = new TableCacheKey(ebId.toString(), "testTableCache", "path");
 		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, resource).call(), null));
 		key = new TableCacheKey(ebId.toString(), "testTableCache", "path");
-		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, null).call(), NullPointerException.class));
+		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, null).call(), MultipleFailureException.class));
 		key = new TableCacheKey(ebId.toString(), "", "path");
-		parameters.add(new TableCacheTestParameters(key, null, NullPointerException.class));
+		parameters.add(new TableCacheTestParameters(key, null, MultipleFailureException.class));
 		key = new TableCacheKey(null, "testTableCache", "");
 		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, resource).call(), NullPointerException.class));
 		key = null;
-		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, resource).call(), NullPointerException.class));
+		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, resource).call(), MultipleFailureException.class));
 		
 		return parameters;
 	}
