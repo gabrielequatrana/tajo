@@ -13,6 +13,11 @@ public class TableCacheTestParameters {
 		this.setCacheData(cacheData);
 		this.setExpectedException(expectedException);
 	}
+	
+	public TableCacheTestParameters(TableCacheKey cacheKey, Class<? extends Exception> expectedException) {
+		this.setCacheKey(cacheKey);
+		this.setExpectedException(expectedException);
+	}
 
 	public TableCacheKey getCacheKey() {
 		return cacheKey;
