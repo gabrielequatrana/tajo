@@ -1,6 +1,8 @@
 package org.apache.tajo.tests;
 
 import static org.junit.Assert.assertEquals;
+
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -27,7 +29,7 @@ import org.junit.runners.Parameterized.Parameters;
 public class TableCacheGetCacheKeyByExecutionBlockIdTest {
 
 	// TableCache instance
-	private static TableCache tableCache;
+	private TableCache tableCache;
 
 	// Test parameters
 	private ExecutionBlockId ebId;
@@ -61,8 +63,9 @@ public class TableCacheGetCacheKeyByExecutionBlockIdTest {
 		});
 	}
 
-	@BeforeClass
-	public static void setUp() {
+	@Before
+	public void setUp() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		reset();
 		tableCache = TableCache.getInstance();
 	}
 	
@@ -90,7 +93,6 @@ public class TableCacheGetCacheKeyByExecutionBlockIdTest {
 
 	@After
 	public void cleanUp() {
-		if (!tableCache.hasCache(cacheKey1))
 		tableCache.releaseCache(ebId);
 	}
 
@@ -123,5 +125,11 @@ public class TableCacheGetCacheKeyByExecutionBlockIdTest {
 		}
 
 		System.out.println("\n************************************\n");
+	}
+	
+	private void reset() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		Field instance = TableCache.class.getDeclaredField("instance");
+		instance.setAccessible(true);
+		instance.set(null, null);
 	}
 }

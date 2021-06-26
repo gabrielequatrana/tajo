@@ -75,8 +75,9 @@ public class TableCacheAddCacheTest {
 	
 	@After
 	public void cleanUp() {
-		if (!tableCache.hasCache(cacheKey))
-		tableCache.releaseCache(ebId);
+		if (tableCache.hasCache(cacheKey)) {
+			tableCache.releaseCache(ebId);
+		}
 	}
 
 	@Test
