@@ -37,7 +37,7 @@ public class TableCacheGetCacheTest {
 
 	// Testing environment
 	private static ExecutionBlockId ebId;
-	static ExecutionBlockSharedResource resource;
+	private static ExecutionBlockSharedResource resource;
 	
 	@Rule
 	public ExpectedException exceptionRule = ExpectedException.none();
@@ -51,6 +51,7 @@ public class TableCacheGetCacheTest {
 	public static Collection<TableCacheTestParameters> getParameters() throws Exception {
 		TableCacheKey key;
 		List<TableCacheTestParameters> parameters = new ArrayList<>();
+		ebId = QueryIdFactory.newExecutionBlockId(QueryIdFactory.newQueryId(System.currentTimeMillis(), 0));
 
 		key = new TableCacheKey(ebId.toString(), "testTableCache", "path");
 		parameters.add(new TableCacheTestParameters(key, null));
@@ -67,7 +68,6 @@ public class TableCacheGetCacheTest {
 	@BeforeClass
 	public static void setUp() {
 		tableCache = TableCache.getInstance();
-		ebId = QueryIdFactory.newExecutionBlockId(QueryIdFactory.newQueryId(System.currentTimeMillis(), 0));
 		resource = new ExecutionBlockSharedResource();
 	}
 
