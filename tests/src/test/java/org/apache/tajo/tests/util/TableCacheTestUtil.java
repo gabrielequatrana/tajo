@@ -18,6 +18,10 @@ public class TableCacheTestUtil {
 		return new Callable<CacheHolder<Long>>() {
 			@Override
 			public CacheHolder<Long> call() throws Exception {
+				if (key == null || resource == null) {
+					return null;
+				}
+				
 				synchronized (resource.getLock()) {
 					if (!TableCache.getInstance().hasCache(key)) {
 						final long nanoTime = System.nanoTime();
