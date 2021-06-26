@@ -16,6 +16,7 @@ import org.apache.tajo.tests.util.TableCacheTestUtil;
 import org.apache.tajo.worker.ExecutionBlockSharedResource;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -35,9 +36,6 @@ public class TableCacheAddCacheTest {
 	private CacheHolder<?> cacheData;
 	private Class<? extends Exception> expectedException;
 	
-	// Testing environment
-	private static ExecutionBlockId ebId = QueryIdFactory.newExecutionBlockId(QueryIdFactory.newQueryId(System.currentTimeMillis(), 0));
-	
 	@Rule
 	public ExpectedException exceptionRule = ExpectedException.none();
 
@@ -51,6 +49,7 @@ public class TableCacheAddCacheTest {
 	public static Collection<TableCacheTestParameters> getParameters() throws Exception {
 		TableCacheKey key;
 		ExecutionBlockSharedResource resource = new ExecutionBlockSharedResource();
+		ExecutionBlockId ebId = QueryIdFactory.newExecutionBlockId(QueryIdFactory.newQueryId(System.currentTimeMillis(), 0));
 		List<TableCacheTestParameters> parameters = new ArrayList<>();
 		
 		key = new TableCacheKey(ebId.toString(), "testTableCache", "path");
@@ -67,16 +66,14 @@ public class TableCacheAddCacheTest {
 		return parameters;
 	}
 	
-	@Before
-	public void setUp() {
+	@BeforeClass
+	public static void setUp() {
 		tableCache = TableCache.getInstance();
 	}
 	
 	@After
 	public void cleanUp() {
-		if (tableCache.hasCache(cacheKey)) {
-			tableCache.releaseCache(ebId);
-		}
+		tableCache.releaseCache(ebId);
 	}
 
 	@Test
