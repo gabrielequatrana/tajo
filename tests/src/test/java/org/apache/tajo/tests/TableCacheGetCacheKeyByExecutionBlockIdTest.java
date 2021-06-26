@@ -68,6 +68,10 @@ public class TableCacheGetCacheKeyByExecutionBlockIdTest {
 	
 	@Before
 	public void configuration() throws Exception {
+		if (ebId == null) {
+			return;
+		}
+		
 		resource = new ExecutionBlockSharedResource();
 		
 		cacheKey1 = new TableCacheKey(ebId.toString(), "test1", "path1");
