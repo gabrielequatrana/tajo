@@ -77,7 +77,7 @@ public class TableCacheGetCacheTest {
 	}
 
 	@Test
-	public void addCacheTest() throws Exception {
+	public void getCacheTest() throws Exception {
 		System.out.println("\n*************** TEST ***************");
 
 		if (expectedException != null) {

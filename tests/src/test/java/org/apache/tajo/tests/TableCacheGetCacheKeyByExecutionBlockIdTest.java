@@ -94,7 +94,7 @@ public class TableCacheGetCacheKeyByExecutionBlockIdTest {
 	}
 
 	@Test
-	public void addCacheTest() throws Exception {
+	public void getCacheKeyByExecutionBlockIdTest() throws Exception {
 		System.out.println("\n*************** TEST ***************");
 
 		if (expectedException != null) {
