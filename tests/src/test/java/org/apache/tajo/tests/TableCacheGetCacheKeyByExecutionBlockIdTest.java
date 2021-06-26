@@ -111,7 +111,8 @@ public class TableCacheGetCacheKeyByExecutionBlockIdTest {
 		System.out.println("AAA: " + actualKeys.size());
 		System.out.println("BBB: " + actualKeys);
 		for (int i = 0; i < 3; i++) {
-			assertEquals(cacheKeys.get(i), actualKeys.get(i));
+			int index = actualKeys.indexOf(cacheKeys.get(i));
+			assertEquals(cacheKeys.get(i), actualKeys.get(index));
 		}
 
 		System.out.println("\n************************************\n");
