@@ -203,6 +203,7 @@ public class TajoClientExternalTableTest {
 	}
 
 	private static Path createTempTable(String tableName) throws IOException {
+		testDir = CommonTestingUtil.getTestDir();
 		Path tablePath = StorageUtil.concatPath(testDir, tableName);
 		BackendTestingUtil.writeTmpTable(conf, tablePath);
 		return tablePath;
