@@ -63,7 +63,7 @@ public class TajoClientExternalTableTest {
 		return Arrays.asList(new Object[][] { 
 			{ "test_table", "test_table", null }, 
 			{ "", "", SQLSyntaxError.class },
-			{ "", null, NullPointerException.class }
+			{ "", null, SQLSyntaxError.class }
 		});
 	}
 
@@ -93,11 +93,6 @@ public class TajoClientExternalTableTest {
 	@Test
 	public void createAndDropExternalTableTest() throws UndefinedTableException, InsufficientPrivilegeException, DuplicateTableException, UnavailableTableLocationException, IOException {
 		System.out.println("\n*************** TEST ***************");
-		
-		if (expectedException == NullPointerException.class) {
-			exceptionRule.expect(expectedException);
-			System.out.println("Raised exception: " + expectedException.getName());
-		}
 
 		int after = client.getTableList(null).size();
 
