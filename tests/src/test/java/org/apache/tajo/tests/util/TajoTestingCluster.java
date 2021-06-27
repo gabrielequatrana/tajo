@@ -695,6 +695,7 @@ public class TajoTestingCluster {
 	 * @param lines Strings written to the file
 	 * @throws java.io.IOException
 	 */
+	@SuppressWarnings("unused")
 	private static void writeLines(File file, String... lines) throws IOException {
 		Writer writer = Files.newWriter(file, Charsets.UTF_8);
 		try {

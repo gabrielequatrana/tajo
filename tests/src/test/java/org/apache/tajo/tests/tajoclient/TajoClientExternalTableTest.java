@@ -1,4 +1,4 @@
-package org.apache.tajo.tests;
+package org.apache.tajo.tests.tajoclient;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -34,29 +34,36 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 @RunWith(Parameterized.class)
-public class TajoClientTableTest {
-	
+public class TajoClientExternalTableTest {
+
+	// TajoClient instance
+	private static TajoClient client;
+
+	// Test parameters
+	private String tableName;
+	private Path path;
+	private Class<? extends Exception> expectedException;
+
+	// Test environment
 	private static TajoTestingCluster cluster;
 	private static TajoConf conf;
-	private static TajoClient client;
 	private static Path testDir;
 
-	private String tableName;
-	private Class<? extends Exception> expectedException;
-	
 	@Rule
 	public ExpectedException exceptionRule = ExpectedException.none();
 
-	public TajoClientTableTest(String tableName, Class<? extends Exception> expectedException) {
+	public TajoClientExternalTableTest(String tableName, Path path, Class<? extends Exception> expectedException) {
 		this.tableName = tableName;
+		this.path = path;
 		this.expectedException = expectedException;
 	}
 
 	@Parameters
-	public static Collection<Object[]> getParameters() {
-		return Arrays.asList(new Object[][] {
-			{ "test_table", null }, 
-			{ "", SQLSyntaxError.class }
+	public static Collection<Object[]> getParameters() throws IOException {
+		return Arrays.asList(new Object[][] { 
+			{ "test_table", createTempTable("test_table"), null }, 
+			{ "", createTempTable(""), SQLSyntaxError.class },
+			{ "", null, NullPointerException.class }
 		});
 	}
 
@@ -64,8 +71,8 @@ public class TajoClientTableTest {
 	public static void setUp() throws Exception {
 		cluster = TpchTestBase.getInstance().getTestingCluster();
 		conf = cluster.getConfiguration();
-		client = cluster.newTajoClient();
 		testDir = CommonTestingUtil.getTestDir();
+		client = cluster.newTajoClient();
 	}
 
 	@AfterClass
@@ -78,198 +85,124 @@ public class TajoClientTableTest {
 		int tables = client.getTableList(null).size();
 		if (tables > 0) {
 			for (String str : client.getTableList(null)) {
-				client.dropTable(str);;
+				client.dropTable(str);
 			}
 		}
 	}
-	
+
 	@Test
 	public void createAndDropExternalTableTest() throws UndefinedTableException, InsufficientPrivilegeException, DuplicateTableException, UnavailableTableLocationException, IOException {
 		System.out.println("\n*************** TEST ***************");
 		
+		if (expectedException == NullPointerException.class) {
+			exceptionRule.expect(expectedException);
+			System.out.println("Raised exception: " + expectedException.getName());
+		}
+
 		int after = client.getTableList(null).size();
-		
-		Path path = createTempTable(tableName);
+
 		client.createExternalTable(tableName, BackendTestingUtil.mockupSchema, path.toUri(), BackendTestingUtil.mockupMeta);
-	
+
 		System.out.println("\n-------------- CREATE --------------");
 		System.out.println("Created table: " + tableName);
 		System.out.println("N. of tables: " + client.getTableList(null).size());
-		
+
 		assertTrue(client.existTable(tableName));
 
 		client.dropTable(tableName);
-		
+
 		int before = client.getTableList(null).size();
-		
+
 		System.out.println("\n-------------- DROP --------------");
 		System.out.println("Dropped table: " + tableName);
 		System.out.println("N. of tables: " + before);
-	
+
 		System.out.println("\n-------------- RESULT --------------");
 		System.out.println("After: " + after);
 		System.out.println("Before: " + before);
-		
+
 		assertFalse(client.existTable(tableName));
-		
+
 		System.out.println("\n************************************\n");
 	}
-	
+
 	@Test
 	public void createAndDropExternalTableByQueryTest() throws TajoException, IOException {
-		System.out.println("\n*************** TEST ***************");	
-		
+		System.out.println("\n*************** TEST ***************");
+
 		if (expectedException != null) {
 			exceptionRule.expect(expectedException);
 			System.out.println("Raised exception: " + expectedException.getName());
 		}
-		
+
 		int after = client.getTableList(null).size();
-		
-		Path path = createTempTable(tableName);
-		String sql1 = "create external table " + tableName + " (deptname text, score int4) " 
-					+ "using csv location '" + path + "'";
-		
+
+		String sql1 = "create external table " + tableName + " (deptname text, score int4) " + "using csv location '" + path + "'";
+
 		client.executeQueryAndGetResult(sql1);
-		
+
 		System.out.println("\n-------------- CREATE --------------");
 		System.out.println("Created table: " + tableName);
 		System.out.println("N. of tables: " + client.getTableList(null).size());
-		
+
 		assertTrue(client.existTable(tableName));
 
 		String sql2 = "drop table " + tableName;
-		
+
 		client.updateQuery(sql2);
-		
+
 		int before = client.getTableList(null).size();
-		
+
 		System.out.println("\n-------------- DROP --------------");
 		System.out.println("Dropped table: " + tableName);
 		System.out.println("N. of tables: " + before);
-	
+
 		System.out.println("\n-------------- RESULT --------------");
 		System.out.println("After: " + after);
 		System.out.println("Before: " + before);
-		
+
 		assertFalse(client.existTable(tableName));
-		
+
 		System.out.println("\n************************************\n");
 	}
-	
+
 	@Test
 	public void createAndPurgeExternalTableTest() throws UndefinedTableException, InsufficientPrivilegeException, DuplicateTableException, UnavailableTableLocationException, IOException {
 		System.out.println("\n*************** TEST ***************");
 		
+		if (expectedException == NullPointerException.class) {
+			exceptionRule.expect(expectedException);
+			System.out.println("Raised exception: " + expectedException.getName());
+		}
+
 		int after = client.getTableList(null).size();
 		
-		Path path = createTempTable(tableName);
 		client.createExternalTable(tableName, BackendTestingUtil.mockupSchema, path.toUri(), BackendTestingUtil.mockupMeta);
-	
+
 		System.out.println("\n-------------- CREATE --------------");
 		System.out.println("Created table: " + tableName);
 		System.out.println("N. of tables: " + client.getTableList(null).size());
-		
+
 		assertTrue(client.existTable(tableName));
 
 		client.dropTable(tableName, true);
-		
+
 		int before = client.getTableList(null).size();
-		
+
 		System.out.println("\n-------------- DROP --------------");
 		System.out.println("Dropped table: " + tableName);
 		System.out.println("N. of tables: " + before);
-	
+
 		System.out.println("\n-------------- RESULT --------------");
 		System.out.println("After: " + after);
 		System.out.println("Before: " + before);
-		
+
 		assertFalse(client.existTable(tableName));
-		
+
 		System.out.println("\n************************************\n");
 	}
-	
-	@Test
-	public void createAndDropTableByQueryTest() throws TajoException, IOException {
-		System.out.println("\n*************** TEST ***************");	
-		
-		if (expectedException != null) {
-			exceptionRule.expect(expectedException);
-			System.out.println("Raised exception: " + expectedException.getName());
-		}
-		
-		int after = client.getTableList(null).size();
 
-		String sql1 = "create table " + tableName + " (deptname text, score int4)";
-		
-		client.updateQuery(sql1);
-		
-		System.out.println("\n-------------- CREATE --------------");
-		System.out.println("Created table: " + tableName);
-		System.out.println("N. of tables: " + client.getTableList(null).size());
-		
-		assertTrue(client.existTable(tableName));
-
-		String sql2 = "drop table " + tableName;
-		
-		client.updateQuery(sql2);
-		
-		int before = client.getTableList(null).size();
-		
-		System.out.println("\n-------------- DROP --------------");
-		System.out.println("Dropped table: " + tableName);
-		System.out.println("N. of tables: " + before);
-	
-		System.out.println("\n-------------- RESULT --------------");
-		System.out.println("After: " + after);
-		System.out.println("Before: " + before);
-		
-		assertFalse(client.existTable(tableName));
-		
-		System.out.println("\n************************************\n");
-	}
-	
-	@Test
-	public void createAndPurgeTableByQueryTest() throws TajoException, IOException {
-		System.out.println("\n*************** TEST ***************");	
-		
-		if (expectedException != null) {
-			exceptionRule.expect(expectedException);
-			System.out.println("Raised exception: " + expectedException.getName());
-		}
-		
-		int after = client.getTableList(null).size();
-
-		String sql1 = "create table " + tableName + " (deptname text, score int4)";
-		
-		client.updateQuery(sql1);
-		
-		System.out.println("\n-------------- CREATE --------------");
-		System.out.println("Created table: " + tableName);
-		System.out.println("N. of tables: " + client.getTableList(null).size());
-		
-		assertTrue(client.existTable(tableName));
-
-		String sql2 = "drop table " + tableName + " purge";
-		
-		client.updateQuery(sql2);
-		
-		int before = client.getTableList(null).size();
-		
-		System.out.println("\n-------------- DROP --------------");
-		System.out.println("Dropped table: " + tableName);
-		System.out.println("N. of tables: " + before);
-	
-		System.out.println("\n-------------- RESULT --------------");
-		System.out.println("After: " + after);
-		System.out.println("Before: " + before);
-		
-		assertFalse(client.existTable(tableName));
-		
-		System.out.println("\n************************************\n");
-	}
-	
-	private Path createTempTable(String tableName) throws IOException {
+	private static Path createTempTable(String tableName) throws IOException {
 		Path tablePath = StorageUtil.concatPath(testDir, tableName);
 		BackendTestingUtil.writeTmpTable(conf, tablePath);
 		return tablePath;

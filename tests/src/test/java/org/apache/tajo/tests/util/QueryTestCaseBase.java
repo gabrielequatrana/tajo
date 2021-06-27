@@ -274,9 +274,9 @@ public class QueryTestCaseBase {
     // hive 0.12 does not support quoted identifier.
     // So, we use lower case database names when Tajo uses HiveCatalogStore.
     if (testingCluster.isHiveCatalogStoreRunning()) {
-      this.currentDatabase = getClass().getSimpleName().toLowerCase();
+      QueryTestCaseBase.currentDatabase = getClass().getSimpleName().toLowerCase();
     } else {
-      this.currentDatabase = getClass().getSimpleName();
+      QueryTestCaseBase.currentDatabase = getClass().getSimpleName();
     }
     testParameter = null;
     init();
@@ -287,7 +287,7 @@ public class QueryTestCaseBase {
   }
 
   public QueryTestCaseBase(String currentDatabase, String testParameter) {
-    this.currentDatabase = currentDatabase;
+    QueryTestCaseBase.currentDatabase = currentDatabase;
     this.testParameter = testParameter;
     init();
   }

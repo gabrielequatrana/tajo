@@ -1,4 +1,4 @@
-package org.apache.tajo.tests;
+package org.apache.tajo.tests.tajoclient;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -29,11 +29,15 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class TajoClientDatabaseTest {
 
-	private static TajoTestingCluster cluster;
+	// TajoClient instance
 	private static TajoClient client;
 	
+	// Test parameters
 	private String databaseName;
 	private Class<? extends Exception> expectedException;
+	
+	// Test environment
+	private static TajoTestingCluster cluster;
 	
 	@Rule
 	public ExpectedException exceptionRule = ExpectedException.none();

@@ -1,4 +1,4 @@
-package org.apache.tajo.tests;
+package org.apache.tajo.tests.tablecache;
 
 import static org.junit.Assert.assertEquals;
 
@@ -111,10 +111,6 @@ public class TableCacheGetCacheKeyByExecutionBlockIdTest {
 		System.out.println("Cache data 1: " + cacheData1.toString());
 		System.out.println("Cache data 2: " + cacheData2.toString());
 		System.out.println("Cache data 3: " + cacheData3.toString());
-		
-		System.out.println("HAS :" + tableCache.hasCache(cacheKey1));
-		System.out.println("HAS :" + tableCache.hasCache(cacheKey2));
-		System.out.println("HAS :" + tableCache.hasCache(cacheKey3));
 
 		List<TableCacheKey> actualKeys = tableCache.getCacheKeyByExecutionBlockId(ebId);
 		for (int i = 0; i < 3; i++) {

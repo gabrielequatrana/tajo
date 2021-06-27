@@ -35,9 +35,6 @@ public class CatalogTestingUtil {
 
   public static TajoConf configureCatalog(TajoConf conf, String testDirPath) throws UnsupportedCatalogStore {
 
-    String driverClassName = System.getProperty(CatalogConstants.STORE_CLASS);
-    final boolean useDefaultCatalog = driverClassName == null;
-
     conf = initializeDerbyStore(conf, testDirPath);
 
     // TODO: if useDefaultCatalog is false, use external database as catalog

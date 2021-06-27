@@ -32,6 +32,7 @@ import org.apache.tajo.storage.*;
 
 import java.io.IOException;
 
+@SuppressWarnings("deprecation")
 public class BackendTestingUtil {
   public final static Schema mockupSchema;
   public final static TableMeta mockupMeta;

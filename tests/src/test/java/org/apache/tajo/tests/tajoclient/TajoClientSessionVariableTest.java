@@ -1,4 +1,4 @@
-package org.apache.tajo.tests;
+package org.apache.tajo.tests.tajoclient;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -23,12 +23,16 @@ import jersey.repackaged.com.google.common.collect.Lists;
 @RunWith(Parameterized.class)
 public class TajoClientSessionVariableTest {
 
-	private static TajoTestingCluster cluster;
+	// TajoClient instance
 	private static TajoClient client;
 	
+	// Test parameters
 	private String sessionName;
 	private String sessionValue;
 	private Map<String, String> map;
+	
+	// Test environment
+	private static TajoTestingCluster cluster;
 
 	public TajoClientSessionVariableTest(String sessionName, String sessionValue) {
 		this.sessionName = sessionName;

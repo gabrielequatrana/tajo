@@ -160,11 +160,11 @@ public class LocalTajoTestingUtility {
     return new Path(resultBaseURL.toString(), suffix);
   }
 
-  public static Path getResultPath(Class clazz, String fileName) {
+  public static Path getResultPath(Class<?> clazz, String fileName) {
     return new Path (getResourcePath("results", clazz.getSimpleName()), fileName);
   }
 
-  public static String getResultText(Class clazz, String fileName) throws IOException {
+  public static String getResultText(Class<?> clazz, String fileName) throws IOException {
     FileSystem localFS = FileSystem.getLocal(new Configuration());
     Path path = getResultPath(clazz, fileName);
     Preconditions.checkState(localFS.exists(path) && localFS.isFile(path));

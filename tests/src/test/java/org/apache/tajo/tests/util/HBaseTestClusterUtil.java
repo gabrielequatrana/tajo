@@ -108,7 +108,8 @@ public class HBaseTestClusterUtil {
     hbaseCluster = new MiniHBaseCluster(c, 1);
 
     // Don't leave here till we've done a successful scan of the hbase:meta
-    HTable t = new HTable(c, TableName.META_TABLE_NAME);
+    @SuppressWarnings("deprecation")
+	HTable t = new HTable(c, TableName.META_TABLE_NAME);
     ResultScanner s = t.getScanner(new Scan());
     while (s.next() != null) {
       continue;
@@ -162,13 +163,15 @@ public class HBaseTestClusterUtil {
     return hbaseCluster;
   }
 
-  public HTableDescriptor getTableDescriptor(String tableName) throws IOException {
+  @SuppressWarnings("deprecation")
+public HTableDescriptor getTableDescriptor(String tableName) throws IOException {
     try (HBaseAdmin admin = new HBaseAdmin(conf)) {
       return admin.getTableDescriptor(Bytes.toBytes(tableName));
     }
   }
 
-  public void createTable(HTableDescriptor hTableDesc) throws IOException {
+  @SuppressWarnings("deprecation")
+public void createTable(HTableDescriptor hTableDesc) throws IOException {
     try (HBaseAdmin admin = new HBaseAdmin(conf)) {
       admin.createTable(hTableDesc);
     }
