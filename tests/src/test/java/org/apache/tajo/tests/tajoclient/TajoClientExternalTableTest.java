@@ -164,11 +164,6 @@ public class TajoClientExternalTableTest {
 	@Test
 	public void createAndPurgeExternalTableTest() throws UndefinedTableException, InsufficientPrivilegeException, DuplicateTableException, UnavailableTableLocationException, IOException {
 		System.out.println("\n*************** TEST ***************");
-		
-		if (expectedException == NullPointerException.class) {
-			exceptionRule.expect(expectedException);
-			System.out.println("Raised exception: " + expectedException.getName());
-		}
 
 		int after = client.getTableList(null).size();
 		
