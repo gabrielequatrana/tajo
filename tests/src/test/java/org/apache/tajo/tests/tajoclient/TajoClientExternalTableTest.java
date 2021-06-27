@@ -52,17 +52,17 @@ public class TajoClientExternalTableTest {
 	@Rule
 	public ExpectedException exceptionRule = ExpectedException.none();
 
-	public TajoClientExternalTableTest(String tableName, Path path, Class<? extends Exception> expectedException) {
+	public TajoClientExternalTableTest(String tableName, String path, Class<? extends Exception> expectedException) throws IOException {
 		this.tableName = tableName;
-		this.path = path;
+		this.path = createTempTable(path);
 		this.expectedException = expectedException;
 	}
 
 	@Parameters
 	public static Collection<Object[]> getParameters() throws IOException {
 		return Arrays.asList(new Object[][] { 
-			{ "test_table", createTempTable("test_table"), null }, 
-			{ "", createTempTable(""), SQLSyntaxError.class },
+			{ "test_table", "test_table", null }, 
+			{ "", "", SQLSyntaxError.class },
 			{ "", null, NullPointerException.class }
 		});
 	}
@@ -202,8 +202,7 @@ public class TajoClientExternalTableTest {
 		System.out.println("\n************************************\n");
 	}
 
-	private static Path createTempTable(String tableName) throws IOException {
-		testDir = CommonTestingUtil.getTestDir();
+	private Path createTempTable(String tableName) throws IOException {
 		Path tablePath = StorageUtil.concatPath(testDir, tableName);
 		BackendTestingUtil.writeTmpTable(conf, tablePath);
 		return tablePath;
