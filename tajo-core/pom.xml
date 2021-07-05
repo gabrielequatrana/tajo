@@ -165,9 +165,9 @@
 						<param>org.apache.tajo.engine.utils.TableCache</param>
 					</targetClasses>
 					<targetTests>
-						<param>org.apache.tajo.tests.tablecache.TableCacheAddCacheTest</param>
-						<param>org.apache.tajo.tests.tablecache.TableCacheGetCacheKeyByExecutionBlockIdTest</param>
-						<param>org.apache.tajo.tests.tablecache.TableCacheGetCacheTest</param>
+						<param>org.apache.tajo.tests.TableCacheAddCacheTest</param>
+						<param>org.apache.tajo.tests.TableCacheGetCacheKeyByExecutionBlockIdTest</param>
+						<param>org.apache.tajo.tests.TableCacheGetCacheTest</param>
 					</targetTests>
 					<avoidCallsTo>
 						<avoidCallsTo>java.util.logging</avoidCallsTo>
