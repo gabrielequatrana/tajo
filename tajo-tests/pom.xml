@@ -9,7 +9,7 @@
 		<relativePath>../tajo-project</relativePath>
 	</parent>
 
-	<artifactId>tests</artifactId>
+	<artifactId>tajo-tests</artifactId>
 	<name>Tajo Tests</name>
 	<packaging>jar</packaging>
 
@@ -354,4 +354,53 @@
 		</plugins>
 
 	</build>
+	
+	<profiles>
+		<profile>
+			<id>mutation-coverage</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-maven</artifactId>
+						<version>1.6.2</version>
+						<configuration>
+							<targetClasses>
+								<param>org.apache.tajo.engine.utils.TableCache</param>
+								<param>org.apache.tajo.client.TajoClient</param>
+								<param>org.apache.tajo.client.TajoClientImpl;</param>
+							</targetClasses>
+							<targetTests>
+								<param>org.apache.tajo.tests.tablecache.TableCacheAddCacheTest</param>
+								<param>org.apache.tajo.tests.tablecache.TableCacheGetCacheKeyByExecutionBlockIdTest</param>
+								<param>org.apache.tajo.tests.tablecache.TableCacheGetCacheTest</param>
+								<param>org.apache.tajo.tests.tajoclient.TajoClientDatabaseTest</param>
+								<param>org.apache.tajo.tests.tablecache.TajoClientExternalTableTest</param>
+								<param>org.apache.tajo.tests.tablecache.TajoClientSessionVariableTest</param>
+								<param>org.apache.tajo.tests.tablecache.TajoClientTableTest</param>
+							</targetTests>
+							<avoidCallsTo>
+								<avoidCallsTo>java.util.logging</avoidCallsTo>
+								<avoidCallsTo>org.apache.log4j</avoidCallsTo>
+								<avoidCallsTo>org.slf4j</avoidCallsTo>
+								<avoidCallsTo>org.apache.commons.logging</avoidCallsTo>
+							</avoidCallsTo>
+						</configuration>
+						<executions>
+							<execution>
+								<id>mutation-coverage</id>
+								<goals>
+									<goal>mutationCoverage</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
 </project>
