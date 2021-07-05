@@ -1,4 +1,4 @@
-package org.apache.tajo.tests;
+package org.apache.tajo.tests.tablecache;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
