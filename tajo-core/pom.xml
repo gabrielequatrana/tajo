@@ -226,6 +226,12 @@
 		<dependency>
 			<groupId>org.apache.tajo</groupId>
 			<artifactId>tajo-client</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.tajo</groupId>
+					<artifactId>tajo-core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.tajo</groupId>
