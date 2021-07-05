@@ -15,7 +15,7 @@ public class TableCacheTestUtil {
 		
 	}
 
-	public static Callable<CacheHolder<Long>> createCacheData(TableCacheKey key, ExecutionBlockSharedResource resource) {
+	public static Callable<CacheHolder<Long>> createCacheData(final TableCacheKey key, final ExecutionBlockSharedResource resource) {
 		return new Callable<CacheHolder<Long>>() {
 			@Override
 			public CacheHolder<Long> call() throws Exception {

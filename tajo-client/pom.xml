@@ -203,18 +203,15 @@
 			<groupId>org.apache.tajo</groupId>
 			<artifactId>tajo-core</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tajo</groupId>
+			<artifactId>tajo-core</artifactId>
+			<scope>test</scope>
 			<exclusions>
 				<exclusion>
 					<groupId>org.apache.tajo</groupId>
-					<artifactId>tajo-client</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.apache.tajo</groupId>
 					<artifactId>tajo-cli</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.apache.tajo</groupId>
-					<artifactId>tajo-core</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
