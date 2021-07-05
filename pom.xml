@@ -107,7 +107,7 @@
 		<module>tajo-metrics</module>
 		<module>tajo-tablespace-example</module>
 		<module>tajo-dist</module>
-
+		<module>tajo-utils</module>
 		<module>tajo-tests</module>
 	</modules>
 

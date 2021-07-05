@@ -202,25 +202,12 @@
 		<dependency>
 			<groupId>org.apache.tajo</groupId>
 			<artifactId>tajo-core</artifactId>
-			<scope>test</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.apache.tajo</groupId>
-			<artifactId>tajo-client</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.apache.tajo</groupId>
-			<artifactId>tajo-cli</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.tajo</groupId>
+					<artifactId>tajo-cli</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -273,6 +260,19 @@
 			<groupId>org.apache.hadoop</groupId>
 			<artifactId>hadoop-yarn-server-common</artifactId>
 			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.pitest</groupId>
+			<artifactId>pitest-maven</artifactId>
+			<version>1.6.2</version>
+			<type>maven-plugin</type>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

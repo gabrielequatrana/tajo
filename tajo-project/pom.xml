@@ -836,12 +836,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.apache.tajo</groupId>
-				<artifactId>tajo-core-tests</artifactId>
-				<version>${project.version}</version>
-				<type>test-jar</type>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.tajo</groupId>
 				<artifactId>tajo-plan</artifactId>
 				<version>${project.version}</version>
 			</dependency>
