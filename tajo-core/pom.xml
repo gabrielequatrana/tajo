@@ -163,11 +163,17 @@
 				<configuration>
 					<targetClasses>
 						<param>org.apache.tajo.engine.utils.TableCache</param>
+						<param>org.apache.tajo.client.TajoClient</param>
+						<param>org.apache.tajo.client.TajoClientImpl;</param>
 					</targetClasses>
 					<targetTests>
-						<param>org.apache.tajo.tests.TableCacheAddCacheTest</param>
-						<param>org.apache.tajo.tests.TableCacheGetCacheKeyByExecutionBlockIdTest</param>
-						<param>org.apache.tajo.tests.TableCacheGetCacheTest</param>
+						<param>org.apache.tajo.tests.tablecache.TableCacheAddCacheTest</param>
+						<param>org.apache.tajo.tests.tablecache.TableCacheGetCacheKeyByExecutionBlockIdTest</param>
+						<param>org.apache.tajo.tests.tablecache.TableCacheGetCacheTest</param>
+						<param>org.apache.tajo.tests.tajoclient.TajoClientDatabaseTest</param>
+						<param>org.apache.tajo.tests.tablecache.TajoClientExternalTableTest</param>
+						<param>org.apache.tajo.tests.tablecache.TajoClientSessionVariableTest</param>
+						<param>org.apache.tajo.tests.tablecache.TajoClientTableTest</param>
 					</targetTests>
 					<avoidCallsTo>
 						<avoidCallsTo>java.util.logging</avoidCallsTo>
@@ -404,6 +410,13 @@
 					<groupId>jdk.tools</groupId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.pitest</groupId>
+			<artifactId>pitest-maven</artifactId>
+			<version>1.6.2</version>
+			<type>maven-plugin</type>
 		</dependency>
 
 		<dependency>
