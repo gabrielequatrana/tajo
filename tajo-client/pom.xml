@@ -204,6 +204,18 @@
 			<artifactId>tajo-core</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.tajo</groupId>
+			<artifactId>tajo-client</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.tajo</groupId>
+			<artifactId>tajo-cli</artifactId>
+			<scope>provided</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
