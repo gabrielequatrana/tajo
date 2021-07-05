@@ -1,4 +1,4 @@
-package org.apache.tajo.tests.tajoclient;
+package org.apache.tajo.tests;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

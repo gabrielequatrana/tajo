@@ -198,6 +198,20 @@
 			<groupId>org.apache.tajo</groupId>
 			<artifactId>tajo-rpc-protobuf</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.tajo</groupId>
+			<artifactId>tajo-core</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.tajo</groupId>
+					<artifactId>tajo-client</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.tajo</groupId>
+					<artifactId>tajo-cli</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
@@ -286,6 +300,10 @@
 			<groupId>org.apache.hadoop</groupId>
 			<artifactId>hadoop-yarn-server-common</artifactId>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hive</groupId>
+			<artifactId>hive-exec</artifactId>
 		</dependency>
 	</dependencies>
 
