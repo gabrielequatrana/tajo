@@ -103,7 +103,7 @@
 		<module>tajo-pullserver</module>
 		<module>tajo-yarn</module>
 		<module>tajo-thirdparty/asm</module>
-		<module>tajo-cli</module>
+		<!--  <module>tajo-cli</module> -->
 		<module>tajo-metrics</module>
 		<module>tajo-tablespace-example</module>
 		<module>tajo-dist</module>
