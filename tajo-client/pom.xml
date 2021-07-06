@@ -250,19 +250,6 @@
 			<artifactId>hadoop-yarn-server-common</artifactId>
 			<scope>provided</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>org.pitest</groupId>
-			<artifactId>pitest-maven</artifactId>
-			<version>1.6.2</version>
-			<type>maven-plugin</type>
-		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 
 	<profiles>
