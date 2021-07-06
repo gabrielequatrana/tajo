@@ -37,14 +37,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.tajo</groupId>
-			<artifactId>tajo-cli</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tajo</groupId>
-			<artifactId>tajo-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tajo</groupId>
 			<artifactId>tajo-common</artifactId>
 		</dependency>
 		<dependency>
@@ -296,17 +288,6 @@
 					<groupId>jdk.tools</groupId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-
-		<dependency>
-			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-java-sdk</artifactId>
-			<version>${aws-java-sdk.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
 		</dependency>
 	</dependencies>
 
