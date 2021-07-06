@@ -164,7 +164,7 @@
 					<targetClasses>
 						<param>org.apache.tajo.engine.utils.TableCache</param>
 						<param>org.apache.tajo.client.TajoClient</param>
-						<param>org.apache.tajo.client.TajoClientImpl;</param>
+						<param>org.apache.tajo.client.TajoClientImpl</param>
 					</targetClasses>
 					<targetTests>
 						<param>org.apache.tajo.tests.tablecache.TableCacheAddCacheTest</param>
