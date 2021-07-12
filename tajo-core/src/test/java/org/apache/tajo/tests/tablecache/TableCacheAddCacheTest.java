@@ -38,8 +38,8 @@ public class TableCacheAddCacheTest {
 	// Testing environment
 	private static ExecutionBlockId ebId;
 	
-	@Rule
-	public ExpectedException exceptionRule = ExpectedException.none();
+	// Rule to manage exceptions
+	@Rule public ExpectedException exceptionRule = ExpectedException.none();
 
 	public TableCacheAddCacheTest(TableCacheTestParameters parameters) {
 		this.cacheKey = parameters.getCacheKey();
@@ -54,26 +54,40 @@ public class TableCacheAddCacheTest {
 		List<TableCacheTestParameters> parameters = new ArrayList<>();
 		ebId = QueryIdFactory.newExecutionBlockId(QueryIdFactory.newQueryId(System.currentTimeMillis(), 0));
 		
+		// Minimal test suite
 		key = new TableCacheKey(ebId.toString(), "testTableCache", "path");
 		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, resource).call(), null));
-		key = new TableCacheKey("", "testTableCache", "");
-		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, resource).call(), null));
-		key = new TableCacheKey(ebId.toString(), "testTableCache", "path");
-		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, null).call(), MultipleFailureException.class));
-		key = new TableCacheKey(ebId.toString(), "", "path");
-		parameters.add(new TableCacheTestParameters(key, null, MultipleFailureException.class));
+		
 		key = null;
 		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, resource).call(), MultipleFailureException.class));
+		
+		key = new TableCacheKey("", "", "");
+		parameters.add(new TableCacheTestParameters(key, null, MultipleFailureException.class));
+		
+		// Added after the improvement of the test suite
+		/*
+		key = new TableCacheKey("", "testTableCache", "");
+		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, resource).call(), null));
+		
+		key = new TableCacheKey(ebId.toString(), "testTableCache", "path");
+		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, null).call(), MultipleFailureException.class));
+		*/
 		
 		return parameters;
 	}
 	
+	// Setup the test environment
 	@Before
 	public void setUp() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		TableCacheTestUtil.reset();
 		tableCache = TableCache.getInstance();
+		
+		if (expectedException != null) {
+			exceptionRule.expect(expectedException);
+		}
 	}
 	
+	// Cleanup the test environment
 	@After
 	public void cleanUp() {
 		tableCache.releaseCache(ebId);
@@ -81,22 +95,11 @@ public class TableCacheAddCacheTest {
 
 	@Test
 	public void addCacheTest() {
-		System.out.println("\n*************** TEST ***************");
-		
-		if (expectedException != null) {
-			exceptionRule.expect(expectedException);
-			System.out.println("Raised exception: " + expectedException.getName());
-		}
-		
+
+		// Add data to cache
 		tableCache.addCache(cacheKey, cacheData);
-		
-		System.out.println("\n-------------- ADD --------------");
-		System.out.println("Cache key: " + cacheKey.toString());
-		System.out.println("Cache data size: " + cacheData.toString());
-		System.out.println("Has cache: " + tableCache.hasCache(cacheKey));
-		
+
+		// Assert that the added data exists
 		assertTrue(tableCache.hasCache(cacheKey));
-		
-		System.out.println("\n************************************\n");
 	}
 }

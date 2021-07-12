@@ -43,8 +43,8 @@ public class TableCacheGetCacheKeyByExecutionBlockIdTest {
 	CacheHolder<?> cacheData3;
 	List<TableCacheKey> cacheKeys;
 	
-	@Rule
-	public ExpectedException exceptionRule = ExpectedException.none();
+	// Rule to manage exceptions
+	@Rule public ExpectedException exceptionRule = ExpectedException.none();
 
 	public TableCacheGetCacheKeyByExecutionBlockIdTest(ExecutionBlockId ebId, Class<? extends Exception> expectedException) {
 		this.ebId = ebId;
@@ -52,19 +52,28 @@ public class TableCacheGetCacheKeyByExecutionBlockIdTest {
 	}
 
 	@Parameters
-	public static Collection<Object[]> getParameters() throws Exception {
+	public static Collection<Object[]> getParameters() {
 		return Arrays.asList(new Object[][] {
+			
+			// Minimal test suite
 			{ QueryIdFactory.newExecutionBlockId(QueryIdFactory.newQueryId(System.currentTimeMillis(), 0)), null },
 			{ QueryIdFactory.newExecutionBlockId(QueryIdFactory.newQueryId(-1L, 0)), null },
-			{ QueryIdFactory.newExecutionBlockId(QueryIdFactory.newQueryId(System.currentTimeMillis(), -1)), null },
-			{ null, NullPointerException.class }
+			{ null, NullPointerException.class },
+			
+			// Added after the improvement of the test suite
+			//{ QueryIdFactory.newExecutionBlockId(QueryIdFactory.newQueryId(System.currentTimeMillis(), -1)), null },
 		});
 	}
 
+	// Setup the test environment
 	@Before
 	public void setUp() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		TableCacheTestUtil.reset();
 		tableCache = TableCache.getInstance();
+		
+		if (expectedException != null) {
+			exceptionRule.expect(expectedException);
+		}
 	}
 	
 	@Before
@@ -89,35 +98,27 @@ public class TableCacheGetCacheKeyByExecutionBlockIdTest {
 		cacheData3 = TableCacheTestUtil.createCacheData(cacheKey3, resource).call();
 	}
 
+	// Cleanup the test environment
 	@After
 	public void cleanUp() {
 		tableCache.releaseCache(ebId);
 	}
 
 	@Test
-	public void getCacheKeyByExecutionBlockIdTest() throws Exception {
-		System.out.println("\n*************** TEST ***************");
+	public void getCacheKeyByExecutionBlockIdTest() {
 
-		if (expectedException != null) {
-			exceptionRule.expect(expectedException);
-			System.out.println("Raised exception: " + expectedException.getName());
-		}
-
+		// Add data to the cache
 		tableCache.addCache(cacheKey1, cacheData1);
 		tableCache.addCache(cacheKey2, cacheData2);
 		tableCache.addCache(cacheKey3, cacheData3);
 
-		System.out.println("\n-------------- ADD --------------");
-		System.out.println("Cache data 1: " + cacheData1.toString());
-		System.out.println("Cache data 2: " + cacheData2.toString());
-		System.out.println("Cache data 3: " + cacheData3.toString());
-
+		// Retrieve the list of keys from the cache
 		List<TableCacheKey> actualKeys = tableCache.getCacheKeyByExecutionBlockId(ebId);
 		for (int i = 0; i < 3; i++) {
 			int index = actualKeys.indexOf(cacheKeys.get(i));
+			
+			// Assert that the cache key is equal to the one retrieved from the cache
 			assertEquals(cacheKeys.get(i), actualKeys.get(index));
 		}
-
-		System.out.println("\n************************************\n");
 	}
 }

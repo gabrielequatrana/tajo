@@ -28,7 +28,6 @@ public class TajoClientSessionVariableTest {
 	
 	// Test parameters
 	private String sessionName;
-	private String sessionValue;
 	private Map<String, String> map;
 	
 	// Test environment
@@ -36,7 +35,6 @@ public class TajoClientSessionVariableTest {
 
 	public TajoClientSessionVariableTest(String sessionName, String sessionValue) {
 		this.sessionName = sessionName;
-		this.sessionValue = sessionValue;
 		map = new HashMap<>();
 		map.put(sessionName, sessionValue);
 	}
@@ -44,19 +42,25 @@ public class TajoClientSessionVariableTest {
 	@Parameters
 	public static Collection<Object[]> getParameters() {
 		return Arrays.asList(new Object[][] {
+			
+			// Minimal test suite
 			{ "test_name", "test_value" },
 			{ "test_name", "" },
 			{ "", "test_value" },
-			{ "", "" }
+			
+			// Added after the improvement of the test suite
+			//{ "", "" }
 		});
 	}
 	
+	// Setup the test environment
 	@BeforeClass
 	public static void setUp() throws Exception {
 		cluster = TpchTestBase.getInstance().getTestingCluster();
 		client = cluster.newTajoClient();
 	}
 
+	// Cleanup the test environment
 	@AfterClass
 	public static void tearDown() {
 		client.close();
@@ -64,32 +68,17 @@ public class TajoClientSessionVariableTest {
 	
 	@Test
 	public void updateAndUnsetSessionVariablesTest() {
-		System.out.println("\n*************** TEST ***************");
-		
-		int after = client.getAllSessionVariables().size();
 
+		// Add new session variables to the client
 		client.updateSessionVariables(map);
 
-		System.out.println("\n-------------- UPDATE --------------");
-		System.out.println("Updated varibale: " + sessionName + ":" + sessionValue);
-		System.out.println("N. of variables: " + client.getAllSessionVariables().size());
-		
+		// Assert that the new session variables exists
 		assertTrue(client.existSessionVariable(sessionName));
 		
+		// Unset the added session variables
 		client.unsetSessionVariables(Lists.newArrayList(sessionName));
-		
-		int before = client.getAllDatabaseNames().size();
-		
-		System.out.println("\n-------------- UNSET --------------");
-		System.out.println("Unsetted varibale: " + sessionName + ":" + sessionValue);
-		System.out.println("N. of varibales: " + before);
 
-		System.out.println("\n-------------- RESULT --------------");
-		System.out.println("After: " + after);
-		System.out.println("Before: " + before);
-
+		// Assert that the session variables doesn't exits
 		assertFalse(client.existSessionVariable(sessionName));
-
-		System.out.println("\n************************************\n");	
 	}
 }

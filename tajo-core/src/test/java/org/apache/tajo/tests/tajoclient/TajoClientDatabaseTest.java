@@ -39,8 +39,8 @@ public class TajoClientDatabaseTest {
 	// Test environment
 	private static TajoTestingCluster cluster;
 	
-	@Rule
-	public ExpectedException exceptionRule = ExpectedException.none();
+	// Rule to manage exceptions
+	@Rule public ExpectedException exceptionRule = ExpectedException.none();
 
 	public TajoClientDatabaseTest(String databaseName, Class<? extends Exception> expectedException) {
 		this.databaseName = databaseName;
@@ -50,17 +50,20 @@ public class TajoClientDatabaseTest {
 	@Parameters
 	public static Collection<Object[]> getParameters() {
 		return Arrays.asList(new Object[][] {
+			// Minimal test suite
 			{ "test_database", null },
 			{ "", SQLSyntaxError.class }
 		});
 	}
 
+	// Setup the test environment
 	@BeforeClass
 	public static void setUp() throws Exception {
 		cluster = TpchTestBase.getInstance().getTestingCluster();
 		client = cluster.newTajoClient();
 	}
 
+	// Cleanup the test environment
 	@AfterClass
 	public static void tearDown() {
 		client.close();
@@ -82,116 +85,69 @@ public class TajoClientDatabaseTest {
 	
 	@Test
 	public void createAndDropDatabaseTest() throws DuplicateDatabaseException, UndefinedDatabaseException, InsufficientPrivilegeException, CannotDropCurrentDatabaseException {
-		System.out.println("\n*************** TEST ***************");
-		
-		int after = client.getAllDatabaseNames().size();
 
+		// Create new database
 		client.createDatabase(databaseName);
-
-		System.out.println("\n-------------- CREATE --------------");
-		System.out.println("Created database: " + databaseName);
-		System.out.println("N. of databases: " + client.getAllDatabaseNames().size());
 		
+		// Assert that new database exists
 		assertTrue(client.existDatabase(databaseName));
 		
+		// Drop created database
 		client.dropDatabase(databaseName);
 		
-		int before = client.getAllDatabaseNames().size();
-		
-		System.out.println("\n-------------- DROP --------------");
-		System.out.println("Dropped database: " + databaseName);
-		System.out.println("N. of databases: " + before);
-
-		System.out.println("\n-------------- RESULT --------------");
-		System.out.println("After: " + after);
-		System.out.println("Before: " + before);
-
+		// Assert that the database doesn't exists
 		assertFalse(client.existDatabase(databaseName));
-
-		System.out.println("\n************************************\n");
 	}
 	
 	@Test
-	public void createAndDropDatabaseByQuery() throws TajoException {
-		System.out.println("\n*************** TEST ***************");
-		
+	public void createAndDropDatabaseByQueryTest() throws TajoException {
+
+		// Set expected exception
 		if (expectedException != null) {
 			exceptionRule.expect(expectedException);
-			System.out.println("Raised exception: " + expectedException.getName());
 		}
-		
-		int after = client.getAllDatabaseNames().size();
-		
+
+		// Create new database
 		String sql1 = "create database " + databaseName;
-
 		client.executeQueryAndGetResult(sql1);
-
-		System.out.println("\n-------------- CREATE --------------");
-		System.out.println("Created database: " + databaseName);
-		System.out.println("N. of databases: " + client.getAllDatabaseNames().size());
 		
+		// Assert that new database exists
 		assertTrue(client.existDatabase(databaseName));
 		
+		// Drop created database
 		String sql2 = "drop database " + databaseName;
-		
 		client.updateQuery(sql2);
-		
-		int before = client.getAllDatabaseNames().size();
-		
-		System.out.println("\n-------------- DROP --------------");
-		System.out.println("Dropped database: " + databaseName);
-		System.out.println("N. of databases: " + before);
 
-		System.out.println("\n-------------- RESULT --------------");
-		System.out.println("After: " + after);
-		System.out.println("Before: " + before);
-
+		// Assert that the database doesn't exists
 		assertFalse(client.existDatabase(databaseName));
-
-		System.out.println("\n************************************\n");
 	}
 	
 	@Test
 	public void createDuplicateDatabaseTest() throws DuplicateDatabaseException {
-		System.out.println("\n*************** TEST ***************");
-		
+
+		// Set expected exception
 		exceptionRule.expect(DuplicateDatabaseException.class);
 		
+		// Create new database
 		client.createDatabase(databaseName);
 
-		System.out.println("\n------------- CREATE_1 -------------");
-		System.out.println("Created database: " + databaseName);
-		System.out.println("N. of databases: " + client.getAllDatabaseNames().size());
-
+		// Try to create a new database with the same name as the previous
 		client.createDatabase(databaseName);
-
-		System.out.println("\n------------- CREATE_2 -------------");
-		System.out.println("Database name: " + databaseName);
-		System.out.println("N. of databases: " + client.getAllDatabaseNames().size());
-		System.out.println("Can't create duplicate database");
-
-		System.out.println("\n************************************\n");
 	}
 	
 	@Test
 	public void dropCurrentDatabaseTest() throws DuplicateDatabaseException, UndefinedDatabaseException, InsufficientPrivilegeException, CannotDropCurrentDatabaseException {
-		System.out.println("\n*************** TEST ***************");
-		
+
+		// Set expected exception
 		exceptionRule.expect(TajoInternalError.class);
 
+		// Create new database
 		client.createDatabase(databaseName);
+		
+		// Select created database
 		client.selectDatabase(databaseName);
 
-		System.out.println("\n-------------- CREATE --------------");
-		System.out.println("Created database: " + databaseName);
-		System.out.println("Selected database: " + client.getCurrentDatabase());
-		
+		// Try to drop selected database
 		client.dropDatabase(databaseName);
-
-		System.out.println("\n-------------- DROP --------------");
-		System.out.println("Current database: " + databaseName);
-		System.out.println("Can't drop current database");
-
-		System.out.println("\n************************************\n");
 	}
 }

@@ -1,7 +1,6 @@
 package org.apache.tajo.tests.tablecache;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,9 +37,10 @@ public class TableCacheGetCacheTest {
 	// Testing environment
 	private static ExecutionBlockId ebId;
 	private ExecutionBlockSharedResource resource;
+	private CacheHolder<?> cacheData;
 	
-	@Rule
-	public ExpectedException exceptionRule = ExpectedException.none();
+	// Rule to manage exceptions
+	@Rule public ExpectedException exceptionRule = ExpectedException.none();
 
 	public TableCacheGetCacheTest(TableCacheTestParameters parameters) {
 		this.cacheKey = parameters.getCacheKey();
@@ -48,66 +48,59 @@ public class TableCacheGetCacheTest {
 	}
 
 	@Parameters
-	public static Collection<TableCacheTestParameters> getParameters() throws Exception {
+	public static Collection<TableCacheTestParameters> getParameters() {
 		TableCacheKey key;
 		List<TableCacheTestParameters> parameters = new ArrayList<>();
 		ebId = QueryIdFactory.newExecutionBlockId(QueryIdFactory.newQueryId(System.currentTimeMillis(), 0));
 
+		// Minimal test suite
 		key = new TableCacheKey(ebId.toString(), "testTableCache", "path");
 		parameters.add(new TableCacheTestParameters(key, null));
-		key = new TableCacheKey("", "testTableCache", "");
+		
+		key = new TableCacheKey("", "", "");
 		parameters.add(new TableCacheTestParameters(key, null));
-		key = new TableCacheKey(ebId.toString(), "", "path");
-		parameters.add(new TableCacheTestParameters(key, null));
+		
 		key = null;
 		parameters.add(new TableCacheTestParameters(key, MultipleFailureException.class));
+
+		// Added after the improvement of the test suite
+		/*
+		key = new TableCacheKey(ebId.toString(), "", "path");
+		parameters.add(new TableCacheTestParameters(key, null));
+		*/
 
 		return parameters;
 	}
 
+	// Setup the test environment
 	@Before
-	public void setUp() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+	public void setUp() throws Exception {
 		TableCacheTestUtil.reset();
 		tableCache = TableCache.getInstance();
 		resource = new ExecutionBlockSharedResource();
+		cacheData = TableCacheTestUtil.createCacheData(cacheKey, resource).call();
+		
+		if (expectedException != null) {
+			exceptionRule.expect(expectedException);
+		}
 	}
 
+	// Cleanup the test environment
 	@After
 	public void cleanUp() {
 		tableCache.releaseCache(ebId);
 	}
 
 	@Test
-	public void getCacheTest() throws Exception {
-		System.out.println("\n*************** TEST ***************");
-
-		if (expectedException != null) {
-			exceptionRule.expect(expectedException);
-			System.out.println("Raised exception: " + expectedException.getName());
-		}
+	public void getCacheTest() {
 		
-		CacheHolder<?> cacheData = TableCacheTestUtil.createCacheData(cacheKey, resource).call();
+		// Add data to cache
 		tableCache.addCache(cacheKey, cacheData);
 
-		System.out.println("\n-------------- ADD --------------");
-		System.out.println("Cache key: " + cacheKey.toString());
-		System.out.println("Cache data size: " + cacheData.toString());
-		System.out.println("Has cache: " + tableCache.hasCache(cacheKey));
-
-		assertTrue(tableCache.hasCache(cacheKey));
-		
+		// Get data from the cache
 		CacheHolder<?> actualData = tableCache.getCache(cacheKey);
-		
-		System.out.println("\n-------------- GET --------------");
-		System.out.println("Cache key: " + cacheKey.toString());
-		System.out.println("Cache data size: " + actualData.toString());
-		
-		System.out.println("\n------------- RESULT -------------");
-		System.out.println("Expected data: " + cacheData.toString());
-		System.out.println("Actual data: " + actualData.toString());
-		
-		assertEquals(cacheData, actualData);
 
-		System.out.println("\n************************************\n");
+		// Assert that retrieved data is the same as the added data
+		assertEquals(cacheData, actualData);
 	}
 }
