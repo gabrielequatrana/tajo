@@ -64,10 +64,8 @@ public class TableCacheGetCacheTest {
 		parameters.add(new TableCacheTestParameters(key, MultipleFailureException.class));
 
 		// Added after the improvement of the test suite
-		/*
 		key = new TableCacheKey(ebId.toString(), "", "path");
 		parameters.add(new TableCacheTestParameters(key, null));
-		*/
 
 		return parameters;
 	}

@@ -49,7 +49,7 @@ public class TajoClientSessionVariableTest {
 			{ "", "test_value" },
 			
 			// Added after the improvement of the test suite
-			//{ "", "" }
+			{ "", "" }
 		});
 	}
 	
