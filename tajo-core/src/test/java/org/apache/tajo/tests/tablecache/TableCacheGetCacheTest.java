@@ -64,10 +64,8 @@ public class TableCacheGetCacheTest {
 		parameters.add(new TableCacheTestParameters(key, MultipleFailureException.class));
 
 		// Added after mutation testing
-		/*
 		key = new TableCacheKey(ebId.toString(), "", "path");
 		parameters.add(new TableCacheTestParameters(key, null));
-		 */
 
 		return parameters;
 	}
