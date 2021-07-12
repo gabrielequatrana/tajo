@@ -173,8 +173,8 @@
 						<param>org.apache.tajo.tests.tablecache.TableCacheGetCacheKeyByExecutionBlockIdTest</param>
 						<param>org.apache.tajo.tests.tablecache.TableCacheGetCacheTest</param>
 						<param>org.apache.tajo.tests.tajoclient.TajoClientDatabaseTest</param>
-						<param>org.apache.tajo.tests.tablecache.TajoClientExternalTableTest</param>
-						<param>org.apache.tajo.tests.tablecache.TajoClientSessionVariableTest</param>
+						<param>org.apache.tajo.tests.tajoclient.TajoClientExternalTableTest</param>
+						<param>org.apache.tajo.tests.tajoclient.TajoClientSessionVariableTest</param>
 					</targetTests>
 					<avoidCallsTo>
 						<avoidCallsTo>java.util.logging</avoidCallsTo>

@@ -60,7 +60,7 @@ public class TableCacheGetCacheKeyByExecutionBlockIdTest {
 			{ QueryIdFactory.newExecutionBlockId(QueryIdFactory.newQueryId(-1L, 0)), null },
 			{ null, NullPointerException.class },
 			
-			// Added after the improvement of the test suite
+			// Added after mutation testing
 			{ QueryIdFactory.newExecutionBlockId(QueryIdFactory.newQueryId(System.currentTimeMillis(), -1)), null },
 		});
 	}

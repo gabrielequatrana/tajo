@@ -64,7 +64,7 @@ public class TableCacheAddCacheTest {
 		key = new TableCacheKey("", "", "");
 		parameters.add(new TableCacheTestParameters(key, null, null));
 		
-		// Added after the improvement of the test suite
+		// Added after mutation testing
 		key = new TableCacheKey("", "testTableCache", "");
 		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, resource).call(), null));
 		
