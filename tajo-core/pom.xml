@@ -165,6 +165,8 @@
 						<param>org.apache.tajo.engine.utils.TableCache</param>
 						<param>org.apache.tajo.client.TajoClient</param>
 						<param>org.apache.tajo.client.TajoClientImpl</param>
+						<param>org.apache.tajo.client.CatalogAdminClientImpl</param>
+						<param>org.apache.tajo.client.QueryClientImpl</param>
 					</targetClasses>
 					<targetTests>
 						<param>org.apache.tajo.tests.tablecache.TableCacheAddCacheTest</param>
@@ -173,7 +175,6 @@
 						<param>org.apache.tajo.tests.tajoclient.TajoClientDatabaseTest</param>
 						<param>org.apache.tajo.tests.tablecache.TajoClientExternalTableTest</param>
 						<param>org.apache.tajo.tests.tablecache.TajoClientSessionVariableTest</param>
-						<param>org.apache.tajo.tests.tablecache.TajoClientTableTest</param>
 					</targetTests>
 					<avoidCallsTo>
 						<avoidCallsTo>java.util.logging</avoidCallsTo>
