@@ -62,7 +62,7 @@ public class TajoClientExternalTableTest {
 			// Minimal test suite
 			{ "test_table", "test_table", null }, 
 			{ "", "test_table", null },
-			{ "test_table", "", SQLSyntaxError.class }
+			{ "test_table", "", null }
 		});
 	}
 
