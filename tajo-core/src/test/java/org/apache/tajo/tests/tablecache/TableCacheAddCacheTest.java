@@ -62,7 +62,7 @@ public class TableCacheAddCacheTest {
 		parameters.add(new TableCacheTestParameters(key, TableCacheTestUtil.createCacheData(key, resource).call(), MultipleFailureException.class));
 		
 		key = new TableCacheKey("", "", "");
-		parameters.add(new TableCacheTestParameters(key, null, MultipleFailureException.class));
+		parameters.add(new TableCacheTestParameters(key, null, null));
 		
 		// Added after the improvement of the test suite
 		/*
