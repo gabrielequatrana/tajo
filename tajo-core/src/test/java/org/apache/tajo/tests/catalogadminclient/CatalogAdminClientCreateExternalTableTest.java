@@ -144,6 +144,5 @@ public class CatalogAdminClientCreateExternalTableTest {
 
 		// Assert that new table exists
 		assertTrue(client.existTable(tableName));
-		assertEquals(tableName, table.getName());
 	}
 }
