@@ -57,7 +57,7 @@ public class ErrorMessages {
     // Syntax Error or Access Rule Violation
     ADD_MESSAGE(SYNTAX_ERROR, "%s", 1);
     ADD_MESSAGE(INSUFFICIENT_PRIVILEGE, "Insufficient privilege to %s", 1);
-    ADD_MESSAGE(CANNOT_DROP_CURRENT_DATABASE, "Cannot drop the current database", 1);
+    ADD_MESSAGE(CANNOT_DROP_CURRENT_DATABASE, "Cannot drop the current database", 0);
 
     ADD_MESSAGE(UNDEFINED_TABLESPACE, "tablespace '%s' does not exist", 1);
     ADD_MESSAGE(UNDEFINED_DATABASE, "database '%s' does not exist", 1);

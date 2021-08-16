@@ -25,6 +25,8 @@ import org.apache.tajo.catalog.CatalogUtil;
 import org.apache.tajo.catalog.Schema;
 import org.apache.tajo.catalog.SchemaBuilder;
 import org.apache.tajo.catalog.TableMeta;
+import org.apache.tajo.catalog.partition.PartitionMethodDesc;
+import org.apache.tajo.catalog.proto.CatalogProtos.PartitionType;
 import org.apache.tajo.common.TajoDataTypes.Type;
 import org.apache.tajo.conf.TajoConf;
 import org.apache.tajo.datum.DatumFactory;
@@ -36,6 +38,7 @@ import java.io.IOException;
 public class BackendTestingUtil {
   public final static Schema mockupSchema;
   public final static TableMeta mockupMeta;
+  public final static PartitionMethodDesc mockupPartitionMethodDesc;
 
   static {
     mockupSchema = SchemaBuilder.builder()
@@ -43,6 +46,7 @@ public class BackendTestingUtil {
         .add("score", Type.INT4)
         .build();
     mockupMeta = CatalogUtil.newTableMeta(BuiltinStorages.TEXT, new TajoConf());
+    mockupPartitionMethodDesc = new PartitionMethodDesc("test_database", "test_table", PartitionType.COLUMN, "test_expression", mockupSchema);
   }
 
   public static void writeTmpTable(TajoConf conf, Path tablePath)
