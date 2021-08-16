@@ -1,6 +1,5 @@
 package org.apache.tajo.tests.catalogadminclient;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -11,7 +10,6 @@ import java.util.Collection;
 
 import org.apache.hadoop.fs.Path;
 import org.apache.tajo.catalog.Schema;
-import org.apache.tajo.catalog.TableDesc;
 import org.apache.tajo.catalog.TableMeta;
 import org.apache.tajo.catalog.partition.PartitionMethodDesc;
 import org.apache.tajo.client.TajoClient;
@@ -134,7 +132,7 @@ public class CatalogAdminClientCreateExternalTableTest {
 	public void createExternalTableTest() throws DuplicateTableException, UnavailableTableLocationException, InsufficientPrivilegeException {
 		
 		// Create new external table
-		TableDesc table = client.createExternalTable(tableName, schema, path, meta, partitionMethodDesc);
+		client.createExternalTable(tableName, schema, path, meta, partitionMethodDesc);
 		
 		if (duplicate) {
 			
