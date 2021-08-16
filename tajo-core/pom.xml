@@ -194,10 +194,10 @@
 						<param>org.apache.tajo.client.SessionConnection</param>
 					</targetClasses>
 					<targetTests>
-						<param>org.apache.tajo.tests.tajoclient.TajoClientCreateDatabaseTest</param>
-						<param>org.apache.tajo.tests.tajoclient.TajoClientDropDatabaseTest</param>
-						<param>org.apache.tajo.tests.tajoclient.TajoClientCreateExternalTableTest</param>
-						<param>org.apache.tajo.tests.tajoclient.TajoClientDropTableTest</param>
+						<param>org.apache.tajo.tests.catalogadminclient.CatalogAdminClientCreateDatabaseTest</param>
+						<param>org.apache.tajo.tests.catalogadminclient.CatalogAdminClientDropDatabaseTest</param>
+						<param>org.apache.tajo.tests.catalogadminclient.CatalogAdminClientCreateExternalTableTest</param>
+						<param>org.apache.tajo.tests.catalogadminclient.CatalogAdminClientDropTableTest</param>
 						<param>org.apache.tajo.tests.sessionconnection.SessionConnectionUpdateSessionVariablesTest</param>
 						<param>org.apache.tajo.tests.sessionconnection.SessionConnectionUnsetSessionVariablesTest</param>
 						<param>org.apache.tajo.tests.sessionconnection.SessionConnectionGetSessionVariableTest</param>
