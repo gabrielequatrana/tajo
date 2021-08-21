@@ -12,7 +12,6 @@ import org.apache.tajo.client.TajoClient;
 import org.apache.tajo.tests.util.SessionConnectionTestUtil;
 import org.apache.tajo.tests.util.TajoTestingCluster;
 import org.apache.tajo.tests.util.TpchTestBase;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
